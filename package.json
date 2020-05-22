@@ -1,0 +1,19 @@
+{
+  "name": "commentator",
+  "version": "1.0.0",
+  "description": "Embeddable comments",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/marsgpl/commentator.git"
+  },
+  "author": "marsgpl",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/marsgpl/commentator/issues"
+  },
+  "homepage": "https://github.com/marsgpl/commentator#readme"
+}
