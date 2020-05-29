@@ -1,0 +1,25 @@
+.modal-popup__form {
+    margin: 0;
+    padding: 0 20px 20px;
+    overflow: hidden;
+}
+
+.modal-popup__form .form__row {
+    margin-top: 20px;
+}
+
+.modal-popup__form .form__row_pad_double {
+    margin-top: 40px;
+}
+
+.modal-popup__form .form__row_pad_half {
+    margin-top: 10px;
+}
+
+.modal-popup__form .form__row:first-child {
+    margin-top: 0;
+}
+
+.modal-popup__form .input_textarea {
+    height: 141px;
+}

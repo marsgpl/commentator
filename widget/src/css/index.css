@@ -1,0 +1,21 @@
+html, body {
+    min-width: 320px;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, textarea {
+    border: none;
+    outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}

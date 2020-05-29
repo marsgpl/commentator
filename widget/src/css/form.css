@@ -1,0 +1,49 @@
+.form__legal-text {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.form__row {
+    display: block;
+}
+
+.form__row_columns {
+    display: flex;
+}
+
+.form__row_center {
+    text-align: center;
+}
+
+.form__label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    user-select: none;
+}
+
+.form__label_caps {
+    text-transform: uppercase;
+}
+
+.form__col {
+    display: flex;
+}
+
+.form__col .form__label {
+    margin-bottom: 0;
+    padding: 0 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.form__col-check {
+    line-height: 24px;
+}
+
+.form__col-check .form__label {
+    display: block;
+    flex-grow: 1;
+    cursor: pointer;
+}

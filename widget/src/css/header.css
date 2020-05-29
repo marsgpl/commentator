@@ -1,0 +1,33 @@
+.header {
+    position: fixed;
+    min-width: 320px;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 66px;
+    background: #fff;
+    text-align: center;
+}
+
+.header__title,
+.header__subtitle {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+}
+
+.header__title {
+    font-size: 24px;
+    margin-top: 6px;
+    font-weight: normal;
+}
+
+.header__subtitle {
+    color: #666;
+    font-size: 16px;
+    margin-top: 6px;
+    font-weight: normal;
+}

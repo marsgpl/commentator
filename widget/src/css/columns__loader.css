@@ -1,0 +1,13 @@
+.columns__loader {
+    position: fixed;
+    top: 50%;
+    margin: -16px 0 0 -16px;
+}
+
+.columns__column_positive .columns__loader {
+    left: 25vw;
+}
+
+.columns__column_negative .columns__loader {
+    left: 75vw;
+}

@@ -1,0 +1,67 @@
+.libra {
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    filter: invert(50%) sepia(28%) saturate(10%) hue-rotate(326deg) brightness(87%) contrast(84%);
+}
+
+.libra__shaft {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: url('../img/libra.shaft.svg') no-repeat center / contain;
+}
+
+.libra__rail {
+    position: absolute;
+    width: 70%;
+    height: 20%;
+    top: 5.5%;
+    left: 17%;
+    background: url('../img/libra.rail.svg') no-repeat center / contain;
+}
+
+.libra__cup {
+    position: absolute;
+    width: 40%;
+    height: 98%;
+    top: 2%;
+    background: url('../img/libra.cup.svg') no-repeat center / contain;
+}
+
+.libra__cup_left {
+    left: 3%;
+}
+
+.libra__cup_right {
+    right: -3%;
+    transform: scaleX(-1);
+}
+
+.libra_left .libra__rail {
+    transform: rotate(-20deg);
+}
+.libra_left .libra__cup_left {
+    left: 4%;
+    top: 12%;
+}
+.libra_left .libra__cup_right {
+    right: -2%;
+    top: -9%;
+}
+
+.libra_right .libra__rail {
+    transform: rotate(20deg);
+}
+.libra_right .libra__cup_left {
+    left: 2%;
+    top: -9%;
+}
+.libra_right .libra__cup_right {
+    right: 2%;
+    top: 12%;
+}

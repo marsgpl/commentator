@@ -1,0 +1,13 @@
+{
+    "lang": "ru",
+    "title": "Аборт",
+    "subtitle": "Поделитесь своим мнением, переубедите людей",
+    "status_positive": "За",
+    "status_negative": "Против",
+    "create_comment": "Написать свое мнение",
+    "your_opinion_input_label": "Ваше мнение:",
+    "your_name_input_label": "Как к вам обращаться:",
+    "anon_input_label": "Не представляться",
+    "create_comment_submit": "Отправить",
+    "create_comment_legal": "Нажимая кнопку \"Отправить\", вы соглашаетесь с условиями использования сервиса и политикой конфиденциальности."
+}

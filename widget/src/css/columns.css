@@ -1,0 +1,24 @@
+.columns {
+    display: flex;
+    width: 100%;
+}
+
+.columns__column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: .5;
+    min-width: 50%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 126px 15px 78px;
+}
+
+.columns__column_positive {
+    background: #f4f5fb;
+    align-items: flex-end;
+}
+
+.columns__column_negative {
+    background: #fff0f0;
+    align-items: flex-start;
+}

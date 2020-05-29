@@ -1,0 +1,27 @@
+.button {
+    box-sizing: border-box;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 16px;
+    background-color: #ffdb4d;
+    color: #000;
+    transition: background-color .1s, transform .1s;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #ffd429;
+}
+
+.button:active {
+    background-color: #fc0;
+    transform: scale(.96);
+}
+
+.button_large {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 30px;
+}

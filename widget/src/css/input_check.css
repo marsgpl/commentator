@@ -1,0 +1,44 @@
+.input_check {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    background: #eaeaea;
+    transition: background-color .1s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.input_check:hover {
+    background: #ddd;
+}
+
+.input_check:active {
+    background: #ccc;
+}
+
+.input_check:checked:before {
+    position: absolute;
+    content: '';
+    width: 3px;
+    height: 11px;
+    left: 13px;
+    top: 6px;
+    background: #000;
+    transform: rotate(45deg);
+}
+
+.input_check:checked:after {
+    position: absolute;
+    content: '';
+    width: 3px;
+    height: 7px;
+    left: 8px;
+    top: 10px;
+    background: #000;
+    transform: rotate(-45deg);
+}
+
+.input_check:checked + .form__label {
+    font-weight: bold;
+}
