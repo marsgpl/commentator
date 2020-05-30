@@ -1,0 +1,10 @@
+name: commentator_api
+description:
+homepage: https://eki.one
+
+environment:
+    sdk: '>=2.5.0 <3.0.0'
+
+dependencies:
+    uuid: ^2.0.4
+    mongo_dart: ^0.4.0

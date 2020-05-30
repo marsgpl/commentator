@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+    mongo:
+        image: mongo:4.2.6-bionic
+        networks:
+            - commentator
+        restart: "no"
+        volumes:
+            - ./mongo-data/:/data/db/:rw
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=r_xAf5RPdK7ZOqnYFjvcp57tPKVbx3bc7Uu
+        command: --quiet
+    api:
+        build: ./api
+        networks:
+            - commentator
+        restart: "no"
+        volumes:
+            - ./api/src/:/commentator/api/src/:ro
+        ports:
+            - 127.0.0.1:42080:80
+
+networks:
+    commentator:
+        external:
+            name: commentator
