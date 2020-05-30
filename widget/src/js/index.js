@@ -1,8 +1,12 @@
-bind(window, 'DOMContentLoaded', function() {
-    const createCommentModal = new ModalPopup(CSS_CLASS_CREATE_COMMENT_MODAL);
-    const createCommentModalForm = new Form(CSS_CLASS_CREATE_COMMENT_MODAL_FORM);
+const CSS_CLASS_FOOTER_BUTTON = '.footer__button';
 
-    bind(CSS_CLASS_FOOTER_BUTTON, 'click', function() {
-        createCommentModal.show();
+bind(window, 'DOMContentLoaded', () => {
+    const dialog = new Dialog;
+    const statusRow = new StatusRow;
+    const comments = new Comments(dialog, statusRow);
+    const createCommentModal = new CreateCommentModal(dialog, statusRow, comments);
+
+    bind(CSS_CLASS_FOOTER_BUTTON, 'click', () => {
+        createCommentModal.modal.show();
     });
 });

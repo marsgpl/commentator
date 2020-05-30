@@ -4,7 +4,6 @@ html, body {
 
 body {
     margin: 0;
-    font-family: Arial, Sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -18,4 +17,8 @@ button, input, textarea {
     margin: 0;
     padding: 0;
     display: inline-block;
+}
+
+body, input, textarea {
+    font-family: Arial, Sans;
 }

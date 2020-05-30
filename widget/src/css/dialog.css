@@ -1,0 +1,41 @@
+.dialog.modal-popup_shown .modal-popup__content {
+    animation: popUpFromNoneCentered .2s ease-out;
+}
+
+.dialog.modal-popup_hidden .modal-popup__content {
+    animation: fallDownToNoneCentered .4s ease-out;
+}
+
+.dialog .modal-popup__content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 460px;
+}
+
+.dialog .modal-popup__buttons {
+    padding-top: 20px;
+    text-align: center;
+}
+
+@keyframes fallDownToNoneCentered {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+    75% {
+        transform: translate(-50%, -40%);
+    }
+    100% {
+        transform: translate(-50%, -40%);
+    }
+}
+
+@keyframes popUpFromNoneCentered {
+    0% {
+        transform: translate(-50%, -50%) scale(.9);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}

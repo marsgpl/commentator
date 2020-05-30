@@ -10,7 +10,6 @@
     bottom: 0;
     padding: 20px;
     background: rgba(0, 0, 0, .2);
-    z-index: 9001;
 }
 
 .modal-popup_shown {
@@ -91,4 +90,12 @@
     font-size: 24px;
     font-weight: normal;
     user-select: none;
+}
+
+.modal-popup__body {
+    padding: 0 20px 20px;
+}
+
+.modal-popup__buttons {
+    padding: 0 20px 20px;
 }

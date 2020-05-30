@@ -22,3 +22,11 @@
     background: #fff0f0;
     align-items: flex-start;
 }
+
+.columns__column_positive .comment {
+    background: #e8eaf8;
+}
+
+.columns__column_negative .comment {
+    background: #fedcdc;
+}

@@ -1,3 +1,32 @@
+.form {
+    position: relative;
+}
+
+.form__loader {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    z-index: 2;
+}
+
+.form_state_busy:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, .5);
+    z-index: 1;
+}
+
+.form_state_busy .form__loader {
+    display: block;
+}
+
 .form__legal-text {
     font-size: 14px;
     color: #aaa;
@@ -20,10 +49,6 @@
     font-size: 16px;
     margin-bottom: 10px;
     user-select: none;
-}
-
-.form__label_caps {
-    text-transform: uppercase;
 }
 
 .form__col {

@@ -25,3 +25,8 @@
 .input_textarea:focus {
     border-bottom: 1px solid #666;
 }
+
+.input_text:disabled,
+.input_textarea:disabled {
+    opacity: .5;
+}

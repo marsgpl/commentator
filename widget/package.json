@@ -4,7 +4,8 @@
   "description": "Embeddable comments",
   "main": "src/index.html",
   "scripts": {
-    "build": "npx potato-bundler --src=src --dst=dst/abortion --force-delete-dst --lang=abortion.lang.json"
+    "build-dev": "npx potato-bundler --src=src --dst=dst/abortion/ru --force-delete-dst --lang=abortion.lang.dev.json",
+    "build": "npx potato-bundler --src=src --dst=release/abortion/ru --force-delete-dst --lang=abortion.lang.json"
   },
   "repository": {
     "type": "git",
@@ -12,5 +13,7 @@
   },
   "author": "marsgpl",
   "license": "UNLICENSED",
-  "devDependencies": {}
+  "devDependencies": {
+    "potato-bundler": "^1.0.6"
+  }
 }

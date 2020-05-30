@@ -9,6 +9,7 @@
     color: #000;
     transition: background-color .1s, transform .1s;
     cursor: pointer;
+    max-width: 100%;
 }
 
 .button:hover {
@@ -20,7 +21,7 @@
     transform: scale(.96);
 }
 
-.button_large {
+.button_size_big {
     height: 44px;
     line-height: 44px;
     padding: 0 30px;

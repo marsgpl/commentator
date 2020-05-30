@@ -22,7 +22,7 @@
     "init_comments_failed_title": "Ошибка",
     "init_comments_failed_message": "Не удалось отобразить комментарии",
     "init_comments_failed_button": "Обновить",
-    "api_base_url": "https://eki.one/cmnt/api",
+    "api_base_url": "http://127.0.0.1:42080/api",
     "api_commentator_id": "abortion",
     "api_error_unknown_reason": "Проверьте подключение к интернету или сообщите о проблеме в службу поддержки",
     "format_time_at": "в",
