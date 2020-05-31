@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:mongo_dart/mongo_dart.dart';
 
+import '../RequestInfo.dart';
 import '../constants.dart';
 import '../entities/Comment.dart';
 import '../errorHandlers/invalidParamsFromClient.dart';
-import '../getParam.dart';
+import '../helpers/normalizeName.dart';
+import '../helpers/normalizeText.dart';
 import '../renamer.dart';
 import '../service/Comments.dart';
 
@@ -14,17 +16,20 @@ import '../service/Comments.dart';
 // side=p
 // name=vasya
 Future<Map<String, dynamic>> createComment(
-    HttpRequest request,
+    RequestInfo reqInfo,
     Db mongo,
-    Map<String, dynamic> body,
 ) async {
-    final commentatorId = getParam('commentatorId', body: body);
-    final lang = getParam('lang', body: body);
-    final text = getParam('text', body: body);
-    final side = getParam('side', body: body);
-    final name = getParam('name', body: body);
-    final ip = 'x.x.x.x';
-    final userAgent = 'xxxx';
+    await reqInfo.body;
+    final getParam = reqInfo.getParam;
+
+    final commentatorId = getParam('commentatorId');
+    final lang = getParam('lang');
+    final side = getParam('side');
+    final text = normalizeText(getParam('text'));
+    final name = normalizeName(getParam('name'));
+    final ip = reqInfo.ip;
+    final userAgent = reqInfo.userAgent;
+    final cfUid = reqInfo.cfUid;
 
     if (text.trim().length < 2) {
         return invalidParamsFromClient('min text length is 2');
@@ -50,6 +55,7 @@ Future<Map<String, dynamic>> createComment(
         name: name,
         ip: ip,
         userAgent: userAgent,
+        cfUid: cfUid,
     );
 
     final result = await comments.collection.insert(comment.toMongo());

@@ -1,6 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
-import '../availableCollections.dart';
+import '../constants.dart';
 import '../entities/Comment.dart';
 
 class Comments {

@@ -61,6 +61,7 @@
     use commentators;
     db.abortion_ru_comments.ensureIndex({ "side": 1, "_id": 1 });
     db.abortion_ru_comments.ensureIndex({ "name": 1 });
+    db.abortion_ru_comments.ensureIndex({ "cfUid": 1 });
     db.abortion_ru_comments.ensureIndex({ "text": "text" });
     db.abortion_ru_comments.getIndexes();
 

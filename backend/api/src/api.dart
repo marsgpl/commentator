@@ -9,7 +9,8 @@ import './errorHandlers/internalError.dart';
 import './methods/getComments.dart';
 import './methods/createComment.dart';
 import './renamer.dart';
-import 'errorHandlers/invalidParamsFromClient.dart';
+import './errorHandlers/invalidParamsFromClient.dart';
+import './RequestInfo.dart';
 
 const MONGO_PATH = 'mongodb://root:r_xAf5RPdK7ZOqnYFjvcp57tPKVbx3bc7Uu@mongo:27017/commentators?authSource=admin&appName=api';
 
@@ -29,29 +30,29 @@ Future<void> main() async {
         Map<String, dynamic> answer = {};
         bool die = false;
 
-        try {
-            final body = request.contentLength > 0 ? json.decode(await utf8.decodeStream(request)) : '';
+        final reqInfo = RequestInfo(request);
 
+        try {
             if (method == 'OPTIONS') {
                 answer = {};
             } else if (uri.path == '/api/getComments' || uri.path == renamer('/api/getComments')) {
                 answer = (method == 'GET') ?
-                    await getComments(request, mongo) :
-                    await methodNotAllowedForRoute(request, mongo);
+                    await getComments(reqInfo, mongo) :
+                    methodNotAllowedForRoute(request);
             } else if (uri.path == '/api/createComment' || uri.path == renamer('/api/createComment')) {
                 answer = (method == 'POST') ?
-                    await createComment(request, mongo, body) :
-                    await methodNotAllowedForRoute(request, mongo);
+                    await createComment(reqInfo, mongo) :
+                    methodNotAllowedForRoute(request);
             } else {
-                answer = await routeNotFound(request, mongo);
+                answer = routeNotFound(request);
             }
         } on FormatException catch (error) {
-            answer = await invalidParamsFromClient('POST body JSON is malformed', error: error);
-        } on ConnectionException catch(error) {
-            answer = await internalError(request, mongo, error);
+            answer = invalidParamsFromClient('POST body JSON is malformed', error: error);
+        } on ConnectionException catch(error, stacktrace) {
+            answer = internalError(error, stacktrace);
             die = true;
-        } catch (error) {
-            answer = await internalError(request, mongo, error);
+        } catch (error, stacktrace) {
+            answer = internalError(error, stacktrace);
         }
 
         response.statusCode = HttpStatus.ok;

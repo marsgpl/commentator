@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:math';
 import 'package:mongo_dart/mongo_dart.dart';
 
+import '../RequestInfo.dart';
 import '../constants.dart';
 import '../errorHandlers/invalidParamsFromClient.dart';
-import '../getParam.dart';
 import '../renamer.dart';
 import '../service/Comments.dart';
 
@@ -13,15 +13,15 @@ import '../service/Comments.dart';
 // limit=20
 // lastId=fffffffff
 Future<Map<String, dynamic>> getComments(
-    HttpRequest request,
+    RequestInfo reqInfo,
     Db mongo,
 ) async {
-    final query = request.uri.queryParameters;
+    final getParam = reqInfo.getParam;
 
-    final commentatorId = getParam('commentatorId', query: query);
-    final lang = getParam('lang', query: query);
-    final limit = max(1, min(40, int.parse(getParam('limit', query: query, defaultValue: '20'))));
-    String lastId = getParam('lastId', query: query);
+    final commentatorId = getParam('commentatorId');
+    final lang = getParam('lang');
+    final limit = max(1, min(40, int.parse(getParam('limit', defaultValue: '20'))));
+    final lastId = getParam('lastId');
 
     final comments = Comments(
         mongo: mongo,
@@ -45,11 +45,6 @@ Future<Map<String, dynamic>> getComments(
         limit: limit,
     );
 
-    lastId = comments.lastIdOf([
-        positiveComments,
-        negativeComments,
-    ]);
-
     final positiveCommentsTotalCount = await comments.count(
         side: COMMENT_SIDE_POSITIVE,
     );
@@ -61,7 +56,6 @@ Future<Map<String, dynamic>> getComments(
     return {
         renamer('positiveComments'): positiveComments,
         renamer('negativeComments'): negativeComments,
-        renamer('lastId'): lastId,
         renamer('positiveCommentsTotalCount'): positiveCommentsTotalCount,
         renamer('negativeCommentsTotalCount'): negativeCommentsTotalCount,
     };

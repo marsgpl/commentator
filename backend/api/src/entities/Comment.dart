@@ -11,6 +11,7 @@ class Comment implements Comparable<Comment> {
         this.name = '',
         this.ip = '',
         this.userAgent = '',
+        this.cfUid = '',
     }) :
         id = id ?? Uuid().v4(),
         createdAt = createdAt ?? DateTime.now();
@@ -22,6 +23,7 @@ class Comment implements Comparable<Comment> {
     String name;
     String ip;
     String userAgent;
+    String cfUid;
 
     @override
     String toString() => '*Comment(id: $id)';
@@ -38,7 +40,8 @@ class Comment implements Comparable<Comment> {
         side = mongoData['side'] ?? '',
         name = mongoData['name'] ?? '',
         ip = mongoData['ip'] ?? '',
-        userAgent = mongoData['userAgent'] ?? '';
+        userAgent = mongoData['userAgent'] ?? '',
+        cfUid = mongoData['cfUid'] ?? '';
 
     Map<String, dynamic> toMongo() => {
         // id
@@ -48,6 +51,7 @@ class Comment implements Comparable<Comment> {
         'name': name,
         'ip': ip,
         'userAgent': userAgent,
+        'cfUid': cfUid,
     };
 
     Map<String, dynamic> toJson() => {
@@ -58,5 +62,6 @@ class Comment implements Comparable<Comment> {
         renamer('name'): name,
         // ip
         // userAgent
+        // cfUid
     };
 }
