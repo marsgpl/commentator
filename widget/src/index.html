@@ -31,12 +31,14 @@
         <script src="js/helpers/$.js"></script>
         <script src="js/helpers/$$.js"></script>
         <script src="js/helpers/ajax.js"></script>
+        <script src="js/helpers/addz.js"></script>
         <script src="js/helpers/x.js"></script>
         <script src="js/helpers/y.js"></script>
         <script src="js/helpers/bind.js"></script>
         <script src="js/helpers/dup.js"></script>
         <script src="js/helpers/hide.js"></script>
         <script src="js/helpers/monthName.js"></script>
+        <script src="js/helpers/remove.js"></script>
         <script src="js/helpers/push.js"></script>
         <script src="js/helpers/unshift.js"></script>
         <script src="js/helpers/createNode.js"></script>
@@ -98,7 +100,7 @@
                 <form class="form modal-popup__form create-comment-modal__form">
                     <label class="form__row">
                         <span class="form__label">#lang#your_opinion_input_label#</span>
-                        <textarea class="input_textarea create-comment-modal__input-text"></textarea>
+                        <textarea class="input_textarea create-comment-modal__input-text" maxlength="#lang#comment_text_max_length#"></textarea>
                     </label>
                     <div class="form__row form__row_columns">
                         <label class="form__col form__col-check">
@@ -112,7 +114,7 @@
                     </div>
                     <label class="form__row form__row_pad_double">
                         <span class="form__label">#lang#your_name_input_label#</span>
-                        <input type="text" class="input_text create-comment-modal__input-name" />
+                        <input type="text" class="input_text create-comment-modal__input-name" maxlength="#lang#comment_author_name_max_length#" />
                     </label>
                     <label class="form__row form__col form__col-check form__row_pad_half">
                         <input class="input_check create-comment-modal__input-anon" type="checkbox" />

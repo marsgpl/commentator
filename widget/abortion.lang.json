@@ -25,8 +25,6 @@
     "api_base_url": "https://eki.one/cmnt/api",
     "api_commentator_id": "abortion",
     "api_error_unknown_reason": "Проверьте подключение к интернету или сообщите о проблеме в службу поддержки",
-    "format_time_at": "в",
-    "format_time_today": "Сегодня",
     "format_time_right_now": "Только что",
     "comment_anonymous_name": "Аноним",
     "month_jan": "янв",
@@ -40,5 +38,10 @@
     "month_sep": "сен",
     "month_oct": "окт",
     "month_nov": "ноя",
-    "month_dec": "дек"
+    "month_dec": "дек",
+    "comment_popup_creation_time_title": "Когда создан",
+    "comment_popup_creation_time_button": "Закрыть",
+    "show_full_comment": "Показать полностью",
+    "comment_text_max_length": "2048",
+    "comment_author_name_max_length": "64"
 }

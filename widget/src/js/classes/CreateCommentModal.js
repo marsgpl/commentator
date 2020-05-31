@@ -76,8 +76,8 @@ class CreateCommentModal {
 
     submitForm(then) {
         ajax(API_METHOD_POST, API_BASE_URL + API_METHOD_CREATE_COMMENT, {
-            [API_PARAM_COMMENTATOR_ID]: '#lang#api_commentator_id#',
-            [API_PARAM_LANG]: '#lang#language#',
+            [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
+            [API_PARAM_LANG]: API_LANG,
             [API_PARAM_TEXT]: this.text,
             [API_PARAM_SIDE]: this.side,
             [API_PARAM_NAME]: this.name,
