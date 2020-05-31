@@ -2,7 +2,7 @@ const DICT = {
     'commentatorId': '_',
     'lang': 'a',
     'limit': 'b',
-    'lastId': 'c',
+    'newestId': 'c',
     'text': 'd',
     'side': 'e',
     'name': 'f',
@@ -17,6 +17,8 @@ const DICT = {
     'negativeComments': 'o',
     'positiveCommentsTotalCount': 'p',
     'negativeCommentsTotalCount': 'q',
+    'oldestId': 'r',
+
     '/api/getComments': '/api/_',
     '/api/createComment': '/api/-',
 };

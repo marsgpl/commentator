@@ -28,23 +28,10 @@ class Comments {
         collection = mongo.collection(collectionName);
     }
 
-    String lastIdOf(List<List<Comment>> lists) {
-        String lastId;
-
-        lists.forEach((list) {
-            list.forEach((post) {
-                if (lastId == null || lastId.compareTo(post.id) > 0) {
-                    lastId = post.id;
-                }
-            });
-        });
-
-        return lastId ?? '';
-    }
-
     Future<List<Comment>> getList({
         String side,
-        String lastId,
+        String newestId,
+        String oldestId,
         int limit,
     }) async {
         final selector = where;
@@ -53,8 +40,10 @@ class Comments {
             selector.eq('side', side);
         }
 
-        if (lastId != null && lastId.length > 0) {
-            selector.lt('_id', ObjectId.parse(lastId));
+        if (newestId != null && newestId.length > 0) {
+            selector.gt('_id', ObjectId.parse(newestId));
+        } else if (oldestId != null && oldestId.length > 0) {
+            selector.lt('_id', ObjectId.parse(oldestId));
         }
 
         selector
@@ -67,7 +56,7 @@ class Comments {
             .toList();
     }
 
-    Future<int> count({
+    Future<int> totalCount({
         String side,
     }) async {
         final selector = where;

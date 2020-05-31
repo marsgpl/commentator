@@ -11,7 +11,8 @@ import '../service/Comments.dart';
 // commentatorId=abortion
 // lang=ru
 // limit=20
-// lastId=fffffffff
+// newestId=fffffffff
+// oldestId=fffffffff
 Future<Map<String, dynamic>> getComments(
     RequestInfo reqInfo,
     Db mongo,
@@ -21,7 +22,8 @@ Future<Map<String, dynamic>> getComments(
     final commentatorId = getParam('commentatorId');
     final lang = getParam('lang');
     final limit = max(1, min(40, int.parse(getParam('limit', defaultValue: '20'))));
-    final lastId = getParam('lastId');
+    final newestId = getParam('newestId');
+    final oldestId = getParam('oldestId');
 
     final comments = Comments(
         mongo: mongo,
@@ -35,21 +37,23 @@ Future<Map<String, dynamic>> getComments(
 
     final positiveComments = await comments.getList(
         side: COMMENT_SIDE_POSITIVE,
-        lastId: lastId,
         limit: limit,
+        newestId: newestId,
+        oldestId: oldestId,
     );
 
     final negativeComments = await comments.getList(
         side: COMMENT_SIDE_NEGATIVE,
-        lastId: lastId,
         limit: limit,
+        newestId: newestId,
+        oldestId: oldestId,
     );
 
-    final positiveCommentsTotalCount = await comments.count(
+    final positiveCommentsTotalCount = await comments.totalCount(
         side: COMMENT_SIDE_POSITIVE,
     );
 
-    final negativeCommentsTotalCount = await comments.count(
+    final negativeCommentsTotalCount = await comments.totalCount(
         side: COMMENT_SIDE_NEGATIVE,
     );
 
