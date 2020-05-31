@@ -14,6 +14,7 @@ class ModalPopup {
         /** @type {Object} */ this._titleEl;
         /** @type {Object} */ this._bodyEl;
         /** @type {Object} */ this._buttonsEl;
+        /** @type {number} */ this.myZ;
 
         this._el = $(cssSelector);
 
@@ -31,7 +32,9 @@ class ModalPopup {
     }
 
     show() {
-        this._el.style.zIndex = ModalPopup.nextZ++;
+        this.myZ = ++ModalPopup.lastZ;
+        this._el.style.zIndex = this.myZ;
+
         show(this._el);
 
         this._el.classList.remove(CSS_CLASS_MODAL_POPUP_HIDDEN.substr(1));
@@ -41,12 +44,16 @@ class ModalPopup {
     }
 
     hide() {
-        setTimeout(() => hide(this._el), 300);
+        setTimeout(() => hide(this._el), 200);
 
         this._el.classList.remove(CSS_CLASS_MODAL_POPUP_SHOWN.substr(1));
         this._el.classList.add(CSS_CLASS_MODAL_POPUP_HIDDEN.substr(1));
 
         unbind(window, 'keydown', this.hideByKey);
+
+        if (this.myZ === ModalPopup.lastZ) {
+            ModalPopup.lastZ--;
+        }
     }
 
     hideByParanjaClick(event) {
@@ -63,7 +70,7 @@ class ModalPopup {
     }
 
     hideByKey(event) {
-        if (event && event.keyCode === KEY_CODE_ESC) {
+        if (event && event.keyCode === KEY_CODE_ESC && this.myZ === ModalPopup.lastZ) {
             this.hide();
         }
     }
@@ -117,4 +124,4 @@ class ModalPopup {
     }
 }
 
-ModalPopup.nextZ = 9001;
+ModalPopup.lastZ = 9000;

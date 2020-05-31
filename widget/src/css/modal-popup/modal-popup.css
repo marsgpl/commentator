@@ -13,19 +13,19 @@
 }
 
 .modal-popup_shown {
-    animation: fadeInFromNone .35s ease-out;
+    animation: fadeInFromNone .25s ease-out;
 }
 
 .modal-popup_shown .modal-popup__content {
-    animation: popUpFromNone .2s ease-out;
+    animation: popUpFromNone .15s ease-out;
 }
 
 .modal-popup_hidden {
-    animation: fadeOutToNone .4s ease-out;
+    animation: fadeOutToNone .3s ease-out;
 }
 
 .modal-popup_hidden .modal-popup__content {
-    animation: fallDownToNone .4s ease-out;
+    animation: fallDownToNone .3s ease-out;
 }
 
 @keyframes fadeInFromNone {
@@ -41,7 +41,7 @@
     0% {
         opacity: 1;
     }
-    75% {
+    66% {
         opacity: 0;
     }
     100% {

@@ -1,9 +1,9 @@
 .dialog.modal-popup_shown .modal-popup__content {
-    animation: popUpFromNoneCentered .2s ease-out;
+    animation: popUpFromNoneCentered .15s ease-out;
 }
 
 .dialog.modal-popup_hidden .modal-popup__content {
-    animation: fallDownToNoneCentered .4s ease-out;
+    animation: fallDownToNoneCentered .3s ease-out;
 }
 
 .dialog .modal-popup__content {

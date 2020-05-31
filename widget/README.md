@@ -9,11 +9,8 @@ Embeddable
 
 ## TODO
 
-    on Esc press - hide only last opened popup
     when no comments - show msg "be first"
-    pagination
     when failed to load comments on interval update but comments were shown - do not popup
-    on interval update request only new comments (firstId)
     reply to comment
     likes
     mobile layout
@@ -21,3 +18,4 @@ Embeddable
     checkbox to remember name
     valid ip, ua
     popup comment window by #comment:id
+    when left page stop fetching api, when came back to page - resume and single fetch immediately
