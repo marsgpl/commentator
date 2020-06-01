@@ -44,14 +44,6 @@
     white-space: nowrap;
 }
 
-/* .status__column_left .status__counter {
-    color: #8a96db;
-} */
-
-/* .status__column_right .status__counter {
-    color: #fc6464;
-} */
-
 .status__column_left .status__counter:before {
     content: '—';
     display: inline-block;

@@ -13,7 +13,13 @@ class StatusRow {
     }
 
     setSide(side, value) {
-        let node = side === API_SIDE_POSITIVE ?
+        const oldValue = side === API_SIDE_POSITIVE ?
+            this.getPositiveSideCounterValue() :
+            this.getNegativeSideCounterValue();
+
+        if (value < oldValue) return;
+
+        const node = side === API_SIDE_POSITIVE ?
             this._positiveSideCounterEl :
             this._negativeSideCounterEl;
 

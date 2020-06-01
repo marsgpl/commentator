@@ -13,9 +13,9 @@ class CreateCommentModal {
      * @param {Comments} comments
      */
     constructor(dialog, statusRow, comments) {
-        /** @type {string} */ this.text;
-        /** @type {string} */ this.side;
-        /** @type {string} */ this.name;
+        /** @type {string} */ this.commentText;
+        /** @type {string} */ this.commentSide;
+        /** @type {string} */ this.authorName;
 
         this.dialog = dialog;
         this.statusRow = statusRow;
@@ -67,9 +67,9 @@ class CreateCommentModal {
             return false;
         }
 
-        this.text = text;
-        this.side = sidePositive ? API_SIDE_POSITIVE : API_SIDE_NEGATIVE;
-        this.name = anon ? '' : name;
+        this.commentText = text;
+        this.commentSide = sidePositive ? API_SIDE_POSITIVE : API_SIDE_NEGATIVE;
+        this.authorName = anon ? '' : name;
 
         return true;
     }
@@ -78,9 +78,9 @@ class CreateCommentModal {
         ajax(API_METHOD_POST, API_BASE_URL + API_METHOD_CREATE_COMMENT, {
             [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
             [API_PARAM_LANG]: API_LANG,
-            [API_PARAM_TEXT]: this.text,
-            [API_PARAM_SIDE]: this.side,
-            [API_PARAM_NAME]: this.name,
+            [API_PARAM_TEXT]: this.commentText,
+            [API_PARAM_SIDE]: this.commentSide,
+            [API_PARAM_NAME]: this.authorName,
         }, json => {
             if (apiRequestFailed(json)) {
                 const error = apiExtractError(json);
@@ -93,7 +93,7 @@ class CreateCommentModal {
             } else {
                 this.resetForm();
                 this.modal.hide();
-                this.statusRow.incrementSide(this.side);
+                this.statusRow.incrementSide(this.commentSide);
                 this.comments.loadComments();
             }
 

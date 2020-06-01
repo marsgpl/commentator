@@ -30,3 +30,9 @@
 .columns__column_negative .comment {
     background: #fedcdc;
 }
+
+.columns__no-msgs {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}

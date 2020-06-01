@@ -1,6 +1,8 @@
 const CSS_CLASS_COLUMNS_LOADER = '.columns__loader';
+const CSS_CLASS_COLUMNS_COLUMN = '.columns__column';
 const CSS_CLASS_COLUMNS_COLUMN_POSITIVE = '.columns__column_positive';
 const CSS_CLASS_COLUMNS_COLUMN_NEGATIVE = '.columns__column_negative';
+const CSS_CLASS_COLUMNS_NO_MSGS = '.columns__no-msgs';
 const CSS_CLASS_COMMENT = '.comment';
 const CSS_CLASS_COMMENT_HEADER = '.comment__header';
 const CSS_CLASS_COMMENT_AUTHOR = '.comment__author';
@@ -19,13 +21,19 @@ class Comments {
     constructor(dialog, statusRow) {
         /** @type {number} */ this.dateRefresherInterval;
         /** @type {number} */ this.commentRefresherInterval;
-        /** @type {string} */ this.newestId;
-        /** @type {string} */ this.oldestId;
+        /** @type {string} */ this.newestPositiveId;
+        /** @type {string} */ this.oldestPositiveId;
+        /** @type {string} */ this.newestNegativeId;
+        /** @type {string} */ this.oldestNegativeId;
+        /** @type {number} */ this.positiveColHeight;
+        /** @type {number} */ this.negativeColHeight;
 
-        this.totalCommentsCount = 0;
-        this.totalCommentsShown = 0;
         this.canPaginate = true;
         this.paginationInProcess = false;
+        this.canAutoRefresh = true;
+        this.hasPositiveComments = false;
+        this.hasNegativeComments = false;
+        this.commentsEverLoaded = false;
 
         this.shownCommentIds = {};
 
@@ -35,29 +43,35 @@ class Comments {
         this._positiveColEl = $(CSS_CLASS_COLUMNS_COLUMN_POSITIVE);
         this._negativeColEl = $(CSS_CLASS_COLUMNS_COLUMN_NEGATIVE);
 
+        this.recalcPositiveColHeight();
+        this.recalcNegativeColHeight();
+
         this.loadComments();
         this.startDateRefresher();
         this.startCommentRefresher();
 
         bind(window, 'scroll', this.onScroll.bind(this));
+        bind(document, 'visibilitychange', this.onVisibilityChange.bind(this));
+    }
+
+    onVisibilityChange() {
+        this.canAutoRefresh = document.visibilityState === 'visible';
+
+        if (this.canAutoRefresh) {
+            this.refreshDates();
+            this.loadComments();
+        }
     }
 
     onScroll() {
         if (!this.canPaginate) return;
         if (this.paginationInProcess) return;
 
-        const db = document.body;
-        const de = document.documentElement;
-
-        const contentHeight = Math.max(
-            db.scrollHeight, de.scrollHeight,
-            db.offsetHeight, de.offsetHeight,
-            db.clientHeight, de.clientHeight,
-        );
+        const minContentHeight = Math.min(this.positiveColHeight, this.negativeColHeight);
         const windowHeight = window.innerHeight;
         const scrolledHeight = window.pageYOffset;
 
-        if (contentHeight - scrolledHeight - windowHeight <= windowHeight * .8) {
+        if (minContentHeight - scrolledHeight - windowHeight <= windowHeight * .8) {
             this.paginationInProcess = true;
 
             this.loadComments(true, () => {
@@ -68,14 +82,20 @@ class Comments {
 
     startDateRefresher() {
         this.dateRefresherInterval = setInterval(() => {
-            $$(CSS_CLASS_COMMENT_DATE).forEach(date => {
-                this.refreshDate(date);
-            });
+            if (!this.canAutoRefresh) return;
+            this.refreshDates();
         }, 60000);
+    }
+
+    refreshDates() {
+        $$(CSS_CLASS_COMMENT_DATE).forEach(date => {
+            this.refreshDate(date);
+        });
     }
 
     startCommentRefresher() {
         this.commentRefresherInterval = setInterval(() => {
+            if (!this.canAutoRefresh) return;
             this.loadComments();
         }, 10000);
     }
@@ -107,7 +127,10 @@ class Comments {
 
     addComments(commentsListFromApi, isPagination = false) {
         if (commentsListFromApi.length === 0) {
-            this.canPaginate = false;
+            if (isPagination) {
+                this.canPaginate = false;
+            }
+
             return;
         }
 
@@ -128,11 +151,6 @@ class Comments {
             const textWrap = createNode('div', CSS_CLASS_COMMENT_TEXT_WRAP.substr(1));
 
             this.shownCommentIds[id] = [comment, commentFromApi];
-            this.totalCommentsShown++;
-
-            if (this.totalCommentsShown >= this.totalCommentsCount) {
-                this.canPaginate = false;
-            }
 
             author.innerText = commentFromApi[API_PARAM_NAME] || '#lang#comment_anonymous_name#';
             text.innerText = commentFromApi[API_PARAM_TEXT];
@@ -154,22 +172,31 @@ class Comments {
             push(comment, header);
             push(comment, textWrap);
 
-            const parent = (commentFromApi[API_PARAM_SIDE] === API_SIDE_POSITIVE) ?
+            const isPositive = commentFromApi[API_PARAM_SIDE] === API_SIDE_POSITIVE;
+
+            if (isPositive) {
+                this.hasPositiveComments = true;
+
+                if (!this.newestPositiveId || id > this.newestPositiveId) this.newestPositiveId = id;
+                if (!this.oldestPositiveId || id < this.oldestPositiveId) this.oldestPositiveId = id;
+            } else {
+                this.hasNegativeComments = true;
+
+                if (!this.newestNegativeId || id > this.newestNegativeId) this.newestNegativeId = id;
+                if (!this.oldestNegativeId || id < this.oldestNegativeId) this.oldestNegativeId = id;
+            }
+
+            const parent = isPositive ?
                 this._positiveColEl :
                 this._negativeColEl;
 
             (isPagination ? push : unshift)(parent, comment);
 
-            setTimeout(() => {
-                this.foldText(textWrap, text, comment, id);
-            }, 0);
-
-            if (!this.newestId || id > this.newestId) this.newestId = id;
-            if (!this.oldestId || id < this.oldestId) this.oldestId = id;
+            this.foldText(comment, textWrap, text, id, isPositive);
         });
     }
 
-    foldText(textWrap, text, comment, id) {
+    foldText(comment, textWrap, text, id, isPositive) {
         const wrapHeight = textWrap.offsetHeight;
 
         if (text.offsetHeight <= wrapHeight) {
@@ -185,9 +212,17 @@ class Comments {
 
         bind(showFull, 'click', event => {
             event.preventDefault();
+
             remove(showFull);
+
             text.classList.remove(CSS_CLASS_COMMENT_TEXT_BIG.substr(1));
             textWrap.classList.add(CSS_CLASS_COMMENT_TEXT_WRAP_LOOSE.substr(1));
+
+            if (isPositive) {
+                this.recalcPositiveColHeight();
+            } else {
+                this.recalcNegativeColHeight();
+            }
         });
 
         push(comment, showFull);
@@ -204,12 +239,18 @@ class Comments {
         };
 
         if (isPagination) {
-            if (this.oldestId) {
-                params[API_PARAM_OLDEST_ID] = this.oldestId;
+            if (this.oldestPositiveId) {
+                params[API_PARAM_OLDEST_POSITIVE_ID] = this.oldestPositiveId;
+            }
+            if (this.oldestNegativeId) {
+                params[API_PARAM_OLDEST_NEGATIVE_ID] = this.oldestNegativeId;
             }
         } else {
-            if (this.newestId) {
-                params[API_PARAM_NEWEST_ID] = this.newestId;
+            if (this.newestPositiveId) {
+                params[API_PARAM_NEWEST_POSITIVE_ID] = this.newestPositiveId;
+            }
+            if (this.newestNegativeId) {
+                params[API_PARAM_NEWEST_NEGATIVE_ID] = this.newestNegativeId;
             }
         }
 
@@ -217,21 +258,24 @@ class Comments {
             if (apiRequestFailed(json)) {
                 const error = apiExtractError(json);
 
-                this.dialog.showModal(
-                    '#lang#init_comments_failed_title#',
-                    `#lang#init_comments_failed_message#<br><br>${error}`,
-                    '#lang#init_comments_failed_button#',
-                    () => {
-                        window.location.reload();
-                    },
-                );
+                if (!this.commentsEverLoaded) {
+                    this.dialog.showModal(
+                        '#lang#init_comments_failed_title#',
+                        `#lang#init_comments_failed_message#<br><br>${error}`,
+                        '#lang#init_comments_failed_button#',
+                        () => {
+                            window.location.reload();
+                        },
+                    );
+                }
 
                 return then && then();
             }
 
-            this.totalCommentsCount =
-                json[API_PARAM_POSITIVE_COMMENTS_TOTAL_COUNT] +
-                json[API_PARAM_NEGATIVE_COMMENTS_TOTAL_COUNT];
+            if (!this.commentsEverLoaded) {
+                this.commentsEverLoaded = true;
+                this.hideLoaders();
+            }
 
             this.statusRow.setSide(
                 API_SIDE_POSITIVE,
@@ -241,14 +285,43 @@ class Comments {
                 API_SIDE_NEGATIVE,
                 json[API_PARAM_NEGATIVE_COMMENTS_TOTAL_COUNT]);
 
-            this.hideLoaders();
-
             this.addComments(
                 json[API_PARAM_POSITIVE_COMMENTS]
                     .concat(json[API_PARAM_NEGATIVE_COMMENTS]),
                 isPagination);
 
+            if (this.hasPositiveComments) {
+                hide($(CSS_CLASS_COLUMNS_NO_MSGS, CSS_CLASS_COLUMNS_COLUMN_POSITIVE));
+            } else {
+                show($(CSS_CLASS_COLUMNS_NO_MSGS, CSS_CLASS_COLUMNS_COLUMN_POSITIVE));
+            }
+
+            if (this.hasNegativeComments) {
+                hide($(CSS_CLASS_COLUMNS_NO_MSGS, CSS_CLASS_COLUMNS_COLUMN_NEGATIVE));
+            } else {
+                show($(CSS_CLASS_COLUMNS_NO_MSGS, CSS_CLASS_COLUMNS_COLUMN_NEGATIVE));
+            }
+
+            this.recalcPositiveColHeight();
+            this.recalcNegativeColHeight();
+
             then && then();
+        });
+    }
+
+    recalcPositiveColHeight() {
+        this.positiveColHeight = 126 + 78; // @see columns.css .columns__column padding
+
+        $$(CSS_CLASS_COMMENT, CSS_CLASS_COLUMNS_COLUMN_POSITIVE).forEach(comment => {
+            this.positiveColHeight += comment.offsetHeight + 5 + 10; // @see comment.css .comment margin
+        });
+    }
+
+    recalcNegativeColHeight() {
+        this.negativeColHeight = 126 + 78; // @see columns.css .columns__column padding
+
+        $$(CSS_CLASS_COMMENT, CSS_CLASS_COLUMNS_COLUMN_NEGATIVE).forEach(comment => {
+            this.negativeColHeight += comment.offsetHeight + 5 + 10; // @see comment.css .comment margin
         });
     }
 }

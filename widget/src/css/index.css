@@ -1,8 +1,9 @@
-html, body {
-    min-width: 320px;
+body, textarea {
+    font-family: Arial, Sans;
 }
 
-body {
+html, body {
+    min-width: 320px;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -17,8 +18,4 @@ button, input, textarea {
     margin: 0;
     padding: 0;
     display: inline-block;
-}
-
-body, input, textarea {
-    font-family: Arial, Sans;
 }
