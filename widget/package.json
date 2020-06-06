@@ -14,6 +14,6 @@
   "author": "marsgpl",
   "license": "UNLICENSED",
   "devDependencies": {
-    "potato-bundler": "^1.0.6"
+    "potato-bundler": "^1.0.7"
   }
 }

@@ -11,19 +11,28 @@
         <link rel="stylesheet" href="css/loader.css" />
         <link rel="stylesheet" href="css/libra.css" />
         <link rel="stylesheet" href="css/header.css" />
+        <link rel="stylesheet" href="css/header@media.css" />
         <link rel="stylesheet" href="css/footer.css" />
         <link rel="stylesheet" href="css/status.css" />
+        <link rel="stylesheet" href="css/status@media.css" />
         <link rel="stylesheet" href="css/status__libra.css" />
+        <link rel="stylesheet" href="css/status__libra@media.css" />
         <link rel="stylesheet" href="css/comment.css" />
+        <link rel="stylesheet" href="css/comment@media.css" />
         <link rel="stylesheet" href="css/columns.css" />
-        <link rel="stylesheet" href="css/columns__loader.css" />
+        <link rel="stylesheet" href="css/columns@media.css" />
         <link rel="stylesheet" href="css/input/input_text_textarea.css" />
         <link rel="stylesheet" href="css/input/input_check.css" />
         <link rel="stylesheet" href="css/modal-popup/modal-popup.css" />
+        <link rel="stylesheet" href="css/modal-popup/modal-popup@media.css" />
         <link rel="stylesheet" href="css/modal-popup/modal-popup__form.css" />
+        <link rel="stylesheet" href="css/modal-popup/modal-popup__form@media.css" />
         <link rel="stylesheet" href="css/modal-popup/modal-popup__close.css" />
+        <link rel="stylesheet" href="css/modal-popup/modal-popup__close@media.css" />
         <link rel="stylesheet" href="css/dialog.css" />
+        <link rel="stylesheet" href="css/dialog@media.css" />
         <link rel="stylesheet" href="css/create-comment-modal.css" />
+        <link rel="stylesheet" href="css/create-comment-modal@media.css" />
 
         <script src="js/api.js"></script>
         <script src="js/keyCodes.js"></script>
@@ -37,6 +46,7 @@
         <script src="js/helpers/bind.js"></script>
         <script src="js/helpers/dup.js"></script>
         <script src="js/helpers/hide.js"></script>
+        <script src="js/helpers/isDisplayed.js"></script>
         <script src="js/helpers/monthName.js"></script>
         <script src="js/helpers/remove.js"></script>
         <script src="js/helpers/push.js"></script>
@@ -53,6 +63,8 @@
         <script src="js/classes/Form.js"></script>
         <script src="js/classes/Dialog.js"></script>
         <script src="js/classes/Comments.js"></script>
+        <script src="js/classes/CommentsMono.js"></script>
+        <script src="js/classes/CommentsDual.js"></script>
         <script src="js/classes/CreateCommentModal.js"></script>
 
         <script src="js/index.js"></script>
@@ -88,6 +100,10 @@
             <div class="columns__column columns__column_negative">
                 <div class="loader columns__loader"></div>
                 <div class="columns__no-msgs">#lang#no_negative_msgs#</div>
+            </div>
+            <div class="columns__column columns__column_mono">
+                <div class="loader columns__loader"></div>
+                <div class="columns__no-msgs">#lang#no_msgs#</div>
             </div>
         </main>
 

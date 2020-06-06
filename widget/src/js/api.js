@@ -9,8 +9,8 @@ const API_LANG = 'ru';
 // const API_COMMENTATOR_ID = '#lang#api_commentator_id#';
 // const API_LANG = '#lang#language#';
 
-const API_SIDE_POSITIVE = 'p';
-const API_SIDE_NEGATIVE = 'n';
+const API_COMMENT_SIDE_POSITIVE = 'p';
+const API_COMMENT_SIDE_NEGATIVE = 'n';
 
 const API_PARAM_COMMENTATOR_ID = '_';
 const API_PARAM_LANG = 'a';
@@ -36,7 +36,8 @@ const API_PARAM_OLDEST_POSITIVE_ID = 't';
 const API_PARAM_NEWEST_NEGATIVE_ID = 'u';
 const API_PARAM_OLDEST_NEGATIVE_ID = 'v';
 
-const API_METHOD_GET_COMMENTS = '/_';
+const API_METHOD_GET_COMMENTS_DUAL = '/_';
+const API_METHOD_GET_COMMENTS_MONO = '/a';
 const API_METHOD_CREATE_COMMENT = '/-';
 
 const apiExtractError = function(jsonResponse) {

@@ -1,0 +1,29 @@
+@media (max-width: 639px) {
+    html.window-has-modals-shown {
+        overflow: hidden;
+    }
+
+    .modal-popup {
+        padding: 5px;
+    }
+
+    .modal-popup__title {
+        font-size: 20px;
+        height: 70px;
+        line-height: 70px;
+    }
+
+    .modal-popup__content {
+        max-width: calc(100vw - 10px);
+    }
+
+    .modal-popup__body {
+        padding-bottom: 30px;
+    }
+}
+
+@media (max-width: 414px) {
+    .modal-popup__content {
+        min-width: calc(100vw - 30px);
+    }
+}

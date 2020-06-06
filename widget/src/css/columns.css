@@ -13,6 +13,10 @@
     padding: 126px 15px 78px;
 }
 
+.columns__column_mono {
+    display: none;
+}
+
 .columns__column_positive {
     background: #f4f5fb;
     align-items: flex-end;
@@ -35,4 +39,22 @@
     display: none;
     text-align: center;
     padding: 40px;
+}
+
+.columns__loader {
+    position: fixed;
+    top: 50%;
+    margin: -16px 0 0 -16px;
+}
+
+.columns__column_positive .columns__loader {
+    left: 25vw;
+}
+
+.columns__column_negative .columns__loader {
+    left: 75vw;
+}
+
+.columns__pagination-loader {
+    margin: 40px 20px 30px;
 }

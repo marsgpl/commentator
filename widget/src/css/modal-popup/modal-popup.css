@@ -74,8 +74,10 @@
     position: relative;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-    border-radius: 3px;
+    border-radius: 4px;
     margin: 0 auto;
+    max-width: calc(100vw - 40px);
+    word-wrap: break-word;
 }
 
 .modal-popup__title {

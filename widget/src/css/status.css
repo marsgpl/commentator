@@ -7,7 +7,7 @@
     height: 48px;
     background: #fff;
     display: flex;
-    z-index: 10;
+    z-index: 9;
 }
 
 .status__column {

@@ -1,0 +1,15 @@
+@media (max-width: 639px) {
+    .header {
+        height: 36px;
+        background: #f9f9f9;
+    }
+
+    .header__title {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    .header__subtitle {
+        display: none;
+    }
+}

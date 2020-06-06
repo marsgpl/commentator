@@ -1,0 +1,10 @@
+@media (max-width: 639px) {
+    .dialog .modal-popup__content {
+        max-width: calc(100vw - 10px);
+    }
+
+    .dialog .modal-popup__title {
+        text-align: left;
+        padding-left: 20px;
+    }
+}

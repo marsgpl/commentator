@@ -13,13 +13,13 @@ class StatusRow {
     }
 
     setSide(side, value) {
-        const oldValue = side === API_SIDE_POSITIVE ?
+        const oldValue = side === API_COMMENT_SIDE_POSITIVE ?
             this.getPositiveSideCounterValue() :
             this.getNegativeSideCounterValue();
 
         if (value < oldValue) return;
 
-        const node = side === API_SIDE_POSITIVE ?
+        const node = side === API_COMMENT_SIDE_POSITIVE ?
             this._positiveSideCounterEl :
             this._negativeSideCounterEl;
 
@@ -29,7 +29,7 @@ class StatusRow {
     }
 
     incrementSide(side, amount = 1) {
-        const oldValue = side === API_SIDE_POSITIVE ?
+        const oldValue = side === API_COMMENT_SIDE_POSITIVE ?
             this.getPositiveSideCounterValue() :
             this.getNegativeSideCounterValue();
 

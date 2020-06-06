@@ -10,16 +10,16 @@ class CreateCommentModal {
     /**
      * @param {Dialog} dialog
      * @param {StatusRow} statusRow
-     * @param {Comments} comments
+     * @param {Array<Comments>} commentsClasses
      */
-    constructor(dialog, statusRow, comments) {
+    constructor(dialog, statusRow, commentsClasses) {
         /** @type {string} */ this.commentText;
         /** @type {string} */ this.commentSide;
         /** @type {string} */ this.authorName;
 
         this.dialog = dialog;
         this.statusRow = statusRow;
-        this.comments = comments;
+        this.commentsClasses = commentsClasses;
 
         this.modal = new ModalPopup(CSS_CLASS_CREATE_COMMENT_MODAL);
 
@@ -68,7 +68,7 @@ class CreateCommentModal {
         }
 
         this.commentText = text;
-        this.commentSide = sidePositive ? API_SIDE_POSITIVE : API_SIDE_NEGATIVE;
+        this.commentSide = sidePositive ? API_COMMENT_SIDE_POSITIVE : API_COMMENT_SIDE_NEGATIVE;
         this.authorName = anon ? '' : name;
 
         return true;
@@ -94,7 +94,7 @@ class CreateCommentModal {
                 this.resetForm();
                 this.modal.hide();
                 this.statusRow.incrementSide(this.commentSide);
-                this.comments.loadComments();
+                this.commentsClasses.forEach(comments => comments.loadComments());
             }
 
             then();

@@ -1,0 +1,27 @@
+@media (max-width: 639px) {
+    .modal-popup_with-close-button .modal-popup__title {
+        padding: 0 60px;
+    }
+
+    .modal-popup__close {
+        top: 9px;
+        right: 9px;
+        width: 52px;
+        height: 52px;
+    }
+
+    .modal-popup__close:before,
+    .modal-popup__close:after {
+        width: 26px;
+        top: 26px;
+        background: #000;
+    }
+
+    .modal-popup__close:before {
+        left: 13px;
+    }
+
+    .modal-popup__close:after {
+        right: 13px;
+    }
+}

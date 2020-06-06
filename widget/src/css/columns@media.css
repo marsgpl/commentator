@@ -1,0 +1,25 @@
+@media (max-width: 639px) {
+    .columns__column {
+        display: none;
+    }
+
+    .columns__column_mono {
+        display: flex;
+        flex-grow: 1;
+        min-width: 100%;
+        padding-top: 99px;
+    }
+
+    .columns__no-msgs {
+        padding: 40px 20px;
+    }
+
+    .columns__column_mono .columns__loader {
+        left: 50%;
+    }
+
+    .columns__column_mono .columns__pagination-loader {
+        left: 50%;
+        margin: 35px 0 20px -16px;
+    }
+}

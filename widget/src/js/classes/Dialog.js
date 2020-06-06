@@ -1,8 +1,5 @@
 const CSS_CLASS_DIALOG = '.dialog';
 
-const CSS_CLASS_BUTTON = '.button';
-const CSS_CLASS_BUTTON_SIZE_BIG = '.button_size_big';
-
 class Dialog {
     constructor() {
         this.modal = new ModalPopup(CSS_CLASS_DIALOG);
@@ -47,8 +44,10 @@ class Dialog {
         buttonsEl.innerHTML = '';
 
         buttons.forEach(buttonConf => {
-            const button = createNode('button',
-                `${CSS_CLASS_BUTTON.substr(1)} ${CSS_CLASS_BUTTON_SIZE_BIG.substr(1)}`);
+            const button = createNode('button', [
+                CSS_CLASS_BUTTON,
+                CSS_CLASS_BUTTON_SIZE_BIG,
+            ]);
 
             button.innerText = buttonConf.labelText;
 

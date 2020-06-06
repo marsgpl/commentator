@@ -6,6 +6,7 @@ const CSS_CLASS_MODAL_POPUP_CLOSE = '.modal-popup__close';
 const CSS_CLASS_MODAL_POPUP_TITLE = '.modal-popup__title';
 const CSS_CLASS_MODAL_POPUP_BODY = '.modal-popup__body';
 const CSS_CLASS_MODAL_POPUP_BUTTONS = '.modal-popup__buttons';
+const CSS_CLASS_WINDOW_HAS_MODALS_SHOWN = '.window-has-modals-shown';
 
 class ModalPopup {
     constructor(cssSelector) {
@@ -16,6 +17,7 @@ class ModalPopup {
         /** @type {Object} */ this._buttonsEl;
         /** @type {number} */ this.myZ;
 
+        this.shown = false;
         this._el = $(cssSelector);
 
         this.hide = this.hide.bind(this);
@@ -32,6 +34,10 @@ class ModalPopup {
     }
 
     show() {
+        if (this.shown) return;
+        this.shown = true;
+        ModalPopup.shownRightNowChange(+1);
+
         this.myZ = ++ModalPopup.lastZ;
         this._el.style.zIndex = this.myZ;
 
@@ -44,6 +50,10 @@ class ModalPopup {
     }
 
     hide() {
+        if (!this.shown) return;
+        this.shown = false;
+        ModalPopup.shownRightNowChange(-1);
+
         setTimeout(() => hide(this._el), 200);
 
         this._el.classList.remove(CSS_CLASS_MODAL_POPUP_SHOWN.substr(1));
@@ -125,3 +135,17 @@ class ModalPopup {
 }
 
 ModalPopup.lastZ = 9000;
+ModalPopup.shownRightNow = 0;
+
+ModalPopup.shownRightNowChange = function(delta) {
+    const oldValue = ModalPopup.shownRightNow;
+    const newValue = oldValue + delta;
+
+    ModalPopup.shownRightNow = newValue;
+
+    if (oldValue === 0 && newValue === 1) { // shown
+        $('html').classList.add(CSS_CLASS_WINDOW_HAS_MODALS_SHOWN.substr(1));
+    } else if (oldValue === 1 && newValue === 0) { // hidden
+        $('html').classList.remove(CSS_CLASS_WINDOW_HAS_MODALS_SHOWN.substr(1));
+    }
+};
