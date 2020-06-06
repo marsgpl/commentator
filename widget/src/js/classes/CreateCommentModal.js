@@ -16,12 +16,16 @@ class CreateCommentModal {
         /** @type {string} */ this.commentText;
         /** @type {string} */ this.commentSide;
         /** @type {string} */ this.authorName;
+        /** @type {number} */ this.minHeight;
 
         this.dialog = dialog;
         this.statusRow = statusRow;
         this.commentsClasses = commentsClasses;
 
-        this.modal = new ModalPopup(CSS_CLASS_CREATE_COMMENT_MODAL);
+        this.modal = new ModalPopup(
+            CSS_CLASS_CREATE_COMMENT_MODAL,
+            this.onWindowResize.bind(this),
+        );
 
         this.form = new Form(
             CSS_CLASS_CREATE_COMMENT_MODAL_FORM,
@@ -38,6 +42,20 @@ class CreateCommentModal {
         bind(this._anonEl, 'change', () => {
             this._nameEl.disabled = this._anonEl.checked;
         });
+    }
+
+    onWindowResize() {
+        if (window.innerWidth <= 509) { // src/css/create-comment-modal@media.css
+            const newValue = window.innerHeight;
+
+            if (this.minHeight !== newValue) {
+                this.minHeight = newValue;
+                this.modal.setContentMinHeight(newValue + 'px');
+            }
+        } else if (this.minHeight) {
+            this.minHeight = 0;
+            this.modal.setContentMinHeight('initial');
+        }
     }
 
     checkFormBeforeSubmit() {

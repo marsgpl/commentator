@@ -1,13 +1,13 @@
 const API_METHOD_GET = 'GET';
 const API_METHOD_POST = 'POST';
 
-const API_BASE_URL = 'http://127.0.0.1:42080/api';
-const API_COMMENTATOR_ID = 'abortion';
-const API_LANG = 'ru';
+// const API_BASE_URL = 'http://127.0.0.1:42080/api';
+// const API_COMMENTATOR_ID = 'abortion';
+// const API_LANG = 'ru';
 
-// const API_BASE_URL = '#lang#api_base_url#';
-// const API_COMMENTATOR_ID = '#lang#api_commentator_id#';
-// const API_LANG = '#lang#language#';
+const API_BASE_URL = '#lang#api_base_url#';
+const API_COMMENTATOR_ID = '#lang#api_commentator_id#';
+const API_LANG = '#lang#language#';
 
 const API_COMMENT_SIDE_POSITIVE = 'p';
 const API_COMMENT_SIDE_NEGATIVE = 'n';

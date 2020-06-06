@@ -42,11 +42,6 @@
     overflow: hidden;
 }
 
-.comment__text-wrap_loose {
-    overflow: visible;
-    max-height: initial;
-}
-
 .comment__text_big {
     max-height: 88px;
     display: -webkit-box;
@@ -54,6 +49,15 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: -o-ellipsis-lastline;
+}
+
+.comment__text-wrap_loose {
+    max-height: 660px;
+}
+
+.comment__text-wrap_loose .comment__text_big {
+    -webkit-line-clamp: 30;
+    max-height: 660px;
 }
 
 .comment__show-full {

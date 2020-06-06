@@ -1,7 +1,7 @@
 {
     "language": "ru",
-    "title": "Аборт",
-    "title_url": "http://show-matrix.ru/abort",
+    "title": "Эффект Пандоры",
+    "title_url": "http://show-matrix.ru/pandora",
     "subtitle": "Поделитесь своим мнением, переубедите людей",
     "side_positive": "За",
     "side_negative": "Против",
@@ -24,7 +24,7 @@
     "init_comments_failed_message": "Не удалось отобразить комментарии",
     "init_comments_failed_button": "Обновить",
     "api_base_url": "/cmnt/api",
-    "api_commentator_id": "abortion",
+    "api_commentator_id": "pandora",
     "api_error_unknown_reason": "Проверьте подключение к интернету или сообщите о проблеме в службу поддержки",
     "format_time_right_now": "Только что",
     "comment_anonymous_name": "Аноним",

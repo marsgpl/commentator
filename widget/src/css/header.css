@@ -25,6 +25,11 @@
     font-weight: normal;
 }
 
+.header__title a {
+    color: #000;
+    text-decoration: none;
+}
+
 .header__subtitle {
     color: #666;
     font-size: 16px;

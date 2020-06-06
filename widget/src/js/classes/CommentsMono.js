@@ -78,6 +78,12 @@ class CommentsMono extends Comments {
         return json[API_PARAM_COMMENTS];
     }
 
+    checkCanPaginateFurther(json) {
+        if (json[API_PARAM_COMMENTS].length < Comments.commentsPerQuery) {
+            this.canPaginate = false;
+        }
+    }
+
     toggleNoMsgsNotice() {
         if (this.hasComments) {
             if (this._moMsgsEl) {

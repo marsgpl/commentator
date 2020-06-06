@@ -34,6 +34,7 @@ class Comments {
         /** @type {Function} */ this.getParentContainerForComment;
         /** @type {Function} */ this.areColsDisplayed;
         /** @type {Function} */ this.wrapComment;
+        /** @type {Function} */ this.checkCanPaginateFurther;
 
         this.isVisible = false;
         this.dialog = dialog;
@@ -144,6 +145,10 @@ class Comments {
                 return then && then();
             }
 
+            if (isPagination || !this.commentsEverLoaded) {
+                this.checkCanPaginateFurther(json);
+            }
+
             this.commentsEverLoaded = true;
 
             this.removeLoaders();
@@ -169,14 +174,6 @@ class Comments {
     }
 
     addComments(isPagination, commentsListFromApi) {
-        if (commentsListFromApi.length === 0) {
-            if (isPagination) {
-                this.canPaginate = false;
-            }
-
-            return;
-        }
-
         if (!isPagination) {
             commentsListFromApi = commentsListFromApi.reverse();
         }
@@ -245,7 +242,6 @@ class Comments {
 
             remove(showFull);
 
-            text.classList.remove(CSS_CLASS_COMMENT_TEXT_BIG.substr(1));
             textWrap.classList.add(CSS_CLASS_COMMENT_TEXT_WRAP_LOOSE.substr(1));
         });
 
@@ -277,3 +273,5 @@ class Comments {
         node.innerText = value;
     }
 }
+
+Comments.commentsPerQuery = 20;

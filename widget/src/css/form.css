@@ -4,7 +4,6 @@
 
 .form__loader {
     display: none;
-    position: absolute;
     z-index: 1;
     top: 50%;
     left: 50%;
@@ -25,11 +24,26 @@
 
 .form_state_busy .form__loader {
     display: block;
+    position: absolute;
 }
 
 .form__legal-text {
     font-size: 14px;
     color: #aaa;
+}
+
+.form__legal-text a {
+    padding-left: 5px;
+    color: #666;
+}
+
+.form__legal-text a:hover,
+.form__legal-text a:active {
+    color: #000;
+}
+
+.form__legal-text a:first-child {
+    padding-right: 5px;
 }
 
 .form__row {

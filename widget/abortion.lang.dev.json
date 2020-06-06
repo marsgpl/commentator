@@ -1,6 +1,7 @@
 {
     "language": "ru",
     "title": "Аборт",
+    "title_url": "http://show-matrix.ru/abort",
     "subtitle": "Поделитесь своим мнением, переубедите людей",
     "side_positive": "За",
     "side_negative": "Против",
@@ -9,7 +10,7 @@
     "your_name_input_label": "Как к вам обращаться:",
     "anon_input_label": "Не представляться",
     "create_comment_submit": "Отправить",
-    "create_comment_legal": "Нажимая кнопку \"Отправить\", вы соглашаетесь с условиями использования сервиса и политикой конфиденциальности.",
+    "create_comment_legal": "Нажимая кнопку \"Отправить\", вы соглашаетесь с <a href=\"/cmnt/tos\" target=\"_blank\">условиями использования</a> сервиса и <a href=\"/cmnt/pp\" target=\"_blank\">политикой конфиденциальности</a>.",
     "create_comment_error_empty_text_title": "Напишите мнение",
     "create_comment_error_empty_text_message": "Например: я считаю так, потому что …",
     "create_comment_error_empty_text_button": "Понятно",

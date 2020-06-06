@@ -102,6 +102,14 @@ class CommentsDual extends Comments {
             .concat(json[API_PARAM_NEGATIVE_COMMENTS]);
     }
 
+    checkCanPaginateFurther(json) {
+        if (json[API_PARAM_POSITIVE_COMMENTS].length < Comments.commentsPerQuery &&
+            json[API_PARAM_NEGATIVE_COMMENTS].length < Comments.commentsPerQuery
+        ) {
+            this.canPaginate = false;
+        }
+    }
+
     toggleNoMsgsNotice() {
         if (this.hasPositiveComments) {
             if (this._positiveNoMsgsEl) {

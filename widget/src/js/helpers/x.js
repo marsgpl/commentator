@@ -1,3 +1,4 @@
 function x(event) {
-    return event.pageX || event.clientX;
+    const touch = event.touches && event.touches[0];
+    return touch ? touch.clientX : event.clientX;
 }

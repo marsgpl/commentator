@@ -9,7 +9,7 @@ const CSS_CLASS_MODAL_POPUP_BUTTONS = '.modal-popup__buttons';
 const CSS_CLASS_WINDOW_HAS_MODALS_SHOWN = '.window-has-modals-shown';
 
 class ModalPopup {
-    constructor(cssSelector) {
+    constructor(cssSelector, onWindowResize = null) {
         /** @type {number} */ this.x;
         /** @type {number} */ this.y;
         /** @type {Object} */ this._titleEl;
@@ -19,6 +19,7 @@ class ModalPopup {
 
         this.shown = false;
         this._el = $(cssSelector);
+        this._contentEl = $(CSS_CLASS_MODAL_POPUP_CONTENT, this._el);
 
         this.hide = this.hide.bind(this);
         this.hideByKey = this.hideByKey.bind(this);
@@ -26,6 +27,14 @@ class ModalPopup {
         bind($(CSS_CLASS_MODAL_POPUP_CLOSE, this._el), 'click', this.hide);
         bind(this._el, 'click', this.hideByParanjaClick.bind(this));
         bind(this._el, 'mousedown touchstart', this.rememberClickCoordinates.bind(this));
+
+        if (onWindowResize) {
+            this.onWindowResize = onWindowResize;
+        }
+    }
+
+    setContentMinHeight(newValue) {
+        this._contentEl.style.minHeight = newValue;
     }
 
     rememberClickCoordinates(event) {
@@ -47,6 +56,11 @@ class ModalPopup {
         this._el.classList.add(CSS_CLASS_MODAL_POPUP_SHOWN.substr(1));
 
         bind(window, 'keydown', this.hideByKey);
+
+        if (this.onWindowResize) {
+            this.onWindowResize();
+            bind(window, 'resize', this.onWindowResize);
+        }
     }
 
     hide() {
@@ -60,6 +74,10 @@ class ModalPopup {
         this._el.classList.add(CSS_CLASS_MODAL_POPUP_HIDDEN.substr(1));
 
         unbind(window, 'keydown', this.hideByKey);
+
+        if (this.onWindowResize) {
+            unbind(window, 'resize', this.onWindowResize);
+        }
 
         if (this.myZ === ModalPopup.lastZ) {
             ModalPopup.lastZ--;
