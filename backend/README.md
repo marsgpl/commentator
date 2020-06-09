@@ -85,7 +85,7 @@
     db.abortion_ru_comments_likes.drop()
     db.pandora_ru_comments_likes.drop()
     db.deathpen_ru_comments_likes.drop()
-    db.deppherd_ru_comments.drop()
+    db.deppherd_ru_comments_likes.drop()
 
 ## DB indexes
 

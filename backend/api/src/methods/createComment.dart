@@ -33,7 +33,7 @@ Future<Map<String, dynamic>> createComment(
     final cfUid = reqInfo.cfUid;
 
     if (appUserToken.length != 36) {
-        return invalidParamsFromClient('invalid token');
+        return invalidParamsFromClient('token');
     }
 
     if (text.trim().length < 2) {

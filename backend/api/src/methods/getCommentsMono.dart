@@ -27,7 +27,7 @@ Future<Map<String, dynamic>> getCommentsMono(
     final oldestId = getParam('oldestId');
 
     if (appUserToken.length != 36) {
-        return invalidParamsFromClient('invalid token');
+        return invalidParamsFromClient('token');
     }
 
     final comments = Comments(
