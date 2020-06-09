@@ -1,0 +1,13 @@
+.form__row_label-with-checkbox {
+    display: flex;
+}
+
+.form__row_label-with-checkbox .form__checkbox {
+    padding-left: 10px;
+    max-width: 70%;
+}
+
+.form__row_label-with-checkbox > .form__label {
+    min-width: 30%;
+    flex-grow: 1;
+}

@@ -5,7 +5,7 @@
 
     .columns__column_mono {
         display: flex;
-        flex-grow: 1;
+        flex: 1;
         min-width: 100%;
         padding-top: 99px;
     }

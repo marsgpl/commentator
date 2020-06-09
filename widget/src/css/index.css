@@ -1,5 +1,5 @@
-body, textarea {
-    font-family: Arial, Sans;
+* {
+    box-sizing: border-box;
 }
 
 html, body {
@@ -8,6 +8,13 @@ html, body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    min-height: 100%;
+    display: flex;
+    flex: 1;
+}
+
+body, textarea {
+    font-family: Arial, Sans;
 }
 
 button, input, textarea {

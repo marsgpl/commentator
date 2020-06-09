@@ -61,28 +61,32 @@
 .form__label {
     display: block;
     font-size: 16px;
-    margin-bottom: 10px;
+    line-height: 24px;
+    margin-bottom: 4px;
     user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .form__col {
     display: flex;
+    min-width: 50%;
+    padding-right: 10px;
 }
 
-.form__col .form__label {
+.input_check + .form__label {
     margin-bottom: 0;
-    padding: 0 10px;
-    text-overflow: ellipsis;
+    margin-left: 10px;
     overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.form__col-check {
-    line-height: 24px;
+.form__col:last-child {
+    padding-right: 0;
 }
 
-.form__col-check .form__label {
-    display: block;
-    flex-grow: 1;
-    cursor: pointer;
+.form__checkbox {
+    display: flex;
 }

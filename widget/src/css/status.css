@@ -11,9 +11,8 @@
 }
 
 .status__column {
-    flex-grow: .5;
+    flex: .5;
     min-width: 50%;
-    box-sizing: border-box;
     line-height: 40px;
     display: flex;
 }

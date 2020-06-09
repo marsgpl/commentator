@@ -4,7 +4,7 @@
   "description": "Embeddable comments",
   "main": "src/index.html",
   "scripts": {
-    "build": "npx potato-bundler --src=src --dst=dst/abortion/ru --force-delete-dst --lang=abortion.lang.dev.json",
+    "build": "npx potato-bundler --src=src --dst=dst/pandora/ru --force-delete-dst --lang=pandora.lang.dev.json",
     "deploy": "node prepare-for-prod.js && npx potato-bundler --src=src --dst=release/abortion/ru --force-delete-dst --lang=abortion.lang.json && npx potato-bundler --src=src --dst=release/deathpen/ru --force-delete-dst --lang=deathpen.lang.json && npx potato-bundler --src=src --dst=release/pandora/ru --force-delete-dst --lang=pandora.lang.json && npx potato-bundler --src=src --dst=release/deppherd/ru --force-delete-dst --lang=deppherd.lang.json && rsync -rv release/* root@marsgpl:/var/www/eki.one/cmnt/ && node prepare-for-dev.js"
   },
   "repository": {

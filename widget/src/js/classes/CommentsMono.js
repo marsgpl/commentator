@@ -36,7 +36,7 @@ class CommentsMono extends Comments {
     }
 
     refreshDates() {
-        if (!this.isVisible) return;
+        if (!this.isColumnVisible) return;
 
         $$(CSS_CLASS_COMMENT_DATE, this._colEl).forEach(date => {
             this.refreshDate(date);

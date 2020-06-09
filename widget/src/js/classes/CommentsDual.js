@@ -12,6 +12,9 @@ class CommentsDual extends Comments {
         /** @type {number} */ this.positiveColHeight;
         /** @type {number} */ this.negativeColHeight;
 
+        this.canPaginatePositive = true;
+        this.canPaginateNegative = true;
+
         this.hasPositiveComments = false;
         this.hasNegativeComments = false;
 
@@ -43,11 +46,17 @@ class CommentsDual extends Comments {
     }
 
     getMinContentHeight() {
-        return Math.min(this.positiveColHeight, this.negativeColHeight);
+        if (this.canPaginatePositive && this.canPaginateNegative) {
+            return Math.min(this.positiveColHeight, this.negativeColHeight);
+        } else if (this.canPaginatePositive) {
+            return this.positiveColHeight;
+        } else {
+            return this.negativeColHeight;
+        }
     }
 
     refreshDates() {
-        if (!this.isVisible) return;
+        if (!this.isColumnVisible) return;
 
         $$(CSS_CLASS_COMMENT_DATE, this._positiveColEl).forEach(date => {
             this.refreshDate(date);
@@ -103,11 +112,9 @@ class CommentsDual extends Comments {
     }
 
     checkCanPaginateFurther(json) {
-        if (json[API_PARAM_POSITIVE_COMMENTS].length < Comments.commentsPerQuery &&
-            json[API_PARAM_NEGATIVE_COMMENTS].length < Comments.commentsPerQuery
-        ) {
-            this.canPaginate = false;
-        }
+        this.canPaginatePositive = json[API_PARAM_POSITIVE_COMMENTS].length >= Comments.commentsPerQuery;
+        this.canPaginateNegative = json[API_PARAM_NEGATIVE_COMMENTS].length >= Comments.commentsPerQuery;
+        this.canPaginate = this.canPaginatePositive || this.canPaginateNegative;
     }
 
     toggleNoMsgsNotice() {

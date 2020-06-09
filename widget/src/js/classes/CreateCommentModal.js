@@ -5,6 +5,10 @@ const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_POSITIVE = '.create-comment-moda
 const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_NEGATIVE = '.create-comment-modal__input-side-negative';
 const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_NAME = '.create-comment-modal__input-name';
 const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_ANON = '.create-comment-modal__input-anon';
+const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_REMEMBER_NAME = '.create-comment-modal__input-remember-name';
+
+const STORAGE_KEY_AUTHOR_NAME = '_';
+const STORAGE_KEY_IS_ANON = '-';
 
 class CreateCommentModal {
     /**
@@ -16,7 +20,9 @@ class CreateCommentModal {
         /** @type {string} */ this.commentText;
         /** @type {string} */ this.commentSide;
         /** @type {string} */ this.authorName;
-        /** @type {number} */ this.minHeight;
+        /** @type {number} */ this.minPopupContentHeight;
+        /** @type {string} */ this.authorNameFromMemory;
+        /** @type {boolean} */ this.isAnonFromMemory;
 
         this.dialog = dialog;
         this.statusRow = statusRow;
@@ -36,25 +42,55 @@ class CreateCommentModal {
         this._sidePositiveEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_POSITIVE);
         this._sideNegativeEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_NEGATIVE);
         this._anonEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_ANON);
+        this._rememberNameEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_REMEMBER_NAME);
         this._textEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_TEXT);
         this._nameEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_NAME);
+
+        this.initMemory();
 
         bind(this._anonEl, 'change', () => {
             this._nameEl.disabled = this._anonEl.checked;
         });
     }
 
+    initMemory() {
+        this.authorNameFromMemory = storageRead(STORAGE_KEY_AUTHOR_NAME);
+        this.isAnonFromMemory = Boolean(Number(storageRead(STORAGE_KEY_IS_ANON)));
+
+        this.resetForm();
+    }
+
+    resetForm() {
+        this._sidePositiveEl.checked = false;
+        this._sideNegativeEl.checked = false;
+        this._anonEl.checked = this.isAnonFromMemory;
+        this._textEl.value = '';
+        this._nameEl.value = this.authorNameFromMemory || '';
+        this._rememberNameEl.checked = (typeof this.authorNameFromMemory === 'string');
+        this._nameEl.disabled = this._anonEl.checked;
+    }
+
     onWindowResize() {
         if (window.innerWidth <= 509) { // src/css/create-comment-modal@media.css
             const newValue = window.innerHeight;
 
-            if (this.minHeight !== newValue) {
-                this.minHeight = newValue;
+            if (this.minPopupContentHeight !== newValue) {
+                this.minPopupContentHeight = newValue;
                 this.modal.setContentMinHeight(newValue + 'px');
             }
-        } else if (this.minHeight) {
-            this.minHeight = 0;
+        } else if (this.minPopupContentHeight) {
+            this.minPopupContentHeight = 0;
             this.modal.setContentMinHeight('initial');
+        }
+    }
+
+    toggleMemory(name, isAnon) {
+        if (this._rememberNameEl.checked) {
+            storageWrite(STORAGE_KEY_AUTHOR_NAME, name);
+            storageWrite(STORAGE_KEY_IS_ANON, isAnon ? 1 : 0);
+        } else {
+            storageDelete(STORAGE_KEY_AUTHOR_NAME);
+            storageDelete(STORAGE_KEY_IS_ANON);
         }
     }
 
@@ -63,7 +99,9 @@ class CreateCommentModal {
         const sidePositive = this._sidePositiveEl.checked;
         const sideNegative = this._sideNegativeEl.checked;
         const name = this._nameEl.value.trim();
-        const anon = this._anonEl.checked;
+        const isAnon = this._anonEl.checked;
+
+        this.toggleMemory(name, isAnon);
 
         if (text.length < 2) {
             this.dialog.showModal(
@@ -87,7 +125,7 @@ class CreateCommentModal {
 
         this.commentText = text;
         this.commentSide = sidePositive ? API_COMMENT_SIDE_POSITIVE : API_COMMENT_SIDE_NEGATIVE;
-        this.authorName = anon ? '' : name;
+        this.authorName = isAnon ? '' : name;
 
         return true;
     }
@@ -111,19 +149,12 @@ class CreateCommentModal {
             } else {
                 this.resetForm();
                 this.modal.hide();
+                window.scrollTo(0, 0);
                 this.statusRow.incrementSide(this.commentSide);
                 this.commentsClasses.forEach(comments => comments.loadComments());
             }
 
             then();
         });
-    }
-
-    resetForm() {
-        this._sidePositiveEl.checked = false;
-        this._sideNegativeEl.checked = false;
-        this._anonEl.checked = false;
-        this._textEl.value = '';
-        this._nameEl.value = '';
     }
 }

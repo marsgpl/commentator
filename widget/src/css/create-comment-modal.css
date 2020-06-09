@@ -2,10 +2,10 @@
     max-width: 500px;
 }
 
-.create-comment-modal .form__row_columns .form__col {
-    width: 50%;
-}
-
 .create-comment-modal__form .form__legal-text {
     user-select: none;
+}
+
+.create-comment-modal__form .input_textarea {
+    height: 141px;
 }

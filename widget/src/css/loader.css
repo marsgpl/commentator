@@ -16,7 +16,6 @@
     border-left-color: transparent;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    box-sizing: border-box;
 }
 
 @keyframes spin {

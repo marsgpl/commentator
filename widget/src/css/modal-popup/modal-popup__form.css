@@ -18,7 +18,3 @@
 .modal-popup__form .form__row:first-child {
     margin-top: 0;
 }
-
-.modal-popup__form .input_textarea {
-    height: 141px;
-}

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>#lang#title#</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
 
         <link rel="stylesheet" href="css/index.css" />
         <link rel="stylesheet" href="css/button.css" />
@@ -40,6 +40,7 @@
         <script src="js/helpers/$.js"></script>
         <script src="js/helpers/$$.js"></script>
         <script src="js/helpers/ajax.js"></script>
+        <script src="js/helpers/storage.js"></script>
         <script src="js/helpers/addz.js"></script>
         <script src="js/helpers/x.js"></script>
         <script src="js/helpers/y.js"></script>
@@ -122,12 +123,12 @@
                         <span class="form__label">#lang#your_opinion_input_label#</span>
                         <textarea class="input_textarea create-comment-modal__input-text" maxlength="#lang#comment_text_max_length#"></textarea>
                     </label>
-                    <div class="form__row form__row_columns">
-                        <label class="form__col form__col-check">
+                    <div class="form__row form__row_columns form__row_pad_half">
+                        <label class="form__col form__checkbox">
                             <input class="input_check create-comment-modal__input-side-positive" type="radio" name="_" />
                             <span class="form__label">#lang#side_positive#</span>
                         </label>
-                        <label class="form__col form__col-check">
+                        <label class="form__col form__checkbox">
                             <input class="input_check create-comment-modal__input-side-negative" type="radio" name="_" />
                             <span class="form__label">#lang#side_negative#</span>
                         </label>
@@ -136,10 +137,16 @@
                         <span class="form__label">#lang#your_name_input_label#</span>
                         <input type="text" class="input_text create-comment-modal__input-name" maxlength="#lang#comment_author_name_max_length#" />
                     </label>
-                    <label class="form__row form__col form__col-check form__row_pad_half">
-                        <input class="input_check create-comment-modal__input-anon" type="checkbox" />
-                        <span class="form__label">#lang#anon_input_label#</span>
-                    </label>
+                    <div class="form__row form__row_columns form__row_pad_half">
+                        <label class="form__col form__checkbox">
+                            <input class="input_check create-comment-modal__input-anon" type="checkbox" />
+                            <span class="form__label">#lang#anon_input_label#</span>
+                        </label>
+                        <label class="form__col form__checkbox">
+                            <input class="input_check create-comment-modal__input-remember-name" type="checkbox" />
+                            <span class="form__label">#lang#remember_input_name#</span>
+                        </label>
+                    </div>
                     <div class="form__row form__row_center form__row_pad_double">
                         <button class="button button_size_big">#lang#create_comment_submit#</button>
                     </div>

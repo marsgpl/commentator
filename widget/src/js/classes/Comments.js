@@ -36,7 +36,7 @@ class Comments {
         /** @type {Function} */ this.wrapComment;
         /** @type {Function} */ this.checkCanPaginateFurther;
 
-        this.isVisible = false;
+        this.isColumnVisible = false;
         this.dialog = dialog;
         this.statusRow = statusRow;
 
@@ -55,14 +55,17 @@ class Comments {
     }
 
     onScroll() {
-        if (!this.isVisible) return;
+        if (!this.isColumnVisible) return;
         if (!this.canPaginate) return;
         if (this.paginationInProcess) return;
 
         const windowHeight = window.innerHeight;
         const scrolledHeight = window.pageYOffset;
+        const minContentHeight = this.getMinContentHeight();
 
-        if (this.getMinContentHeight() - scrolledHeight - windowHeight <= windowHeight * .7) {
+        if (minContentHeight + scrolledHeight <= windowHeight) return;
+
+        if (minContentHeight - scrolledHeight - windowHeight <= windowHeight * .7) {
             this.paginationInProcess = true;
 
             this.loadComments(true, () => {
@@ -81,10 +84,10 @@ class Comments {
     }
 
     onWindowResize() {
-        const oldValue = this.isVisible;
+        const oldValue = this.isColumnVisible;
         const newValue = this.areColsDisplayed();
 
-        this.isVisible = newValue;
+        this.isColumnVisible = newValue;
 
         if (newValue && !oldValue) {
             this.onBecomeVisible();
@@ -118,7 +121,7 @@ class Comments {
     }
 
     loadComments(isPagination = false, then = null) {
-        if (!this.isVisible) return;
+        if (!this.isColumnVisible) return;
 
         const url = this.getUrlForLoadComments();
         const params = this.getParamsForLoadComments(isPagination);
@@ -145,11 +148,12 @@ class Comments {
                 return then && then();
             }
 
-            if (isPagination || !this.commentsEverLoaded) {
+            const isFirstLoad = !this.commentsEverLoaded;
+            this.commentsEverLoaded = true;
+
+            if (isPagination || isFirstLoad) {
                 this.checkCanPaginateFurther(json);
             }
-
-            this.commentsEverLoaded = true;
 
             this.removeLoaders();
 
@@ -168,6 +172,10 @@ class Comments {
 
             this.toggleNoMsgsNotice();
             this.recalcColsHeights();
+
+            if (isFirstLoad) {
+                window.scrollTo(0, 0);
+            }
 
             then && then();
         });
