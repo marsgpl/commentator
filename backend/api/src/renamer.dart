@@ -23,10 +23,18 @@ const DICT = {
     'newestNegativeId': 'u',
     'oldestNegativeId': 'v',
     'likes': 'w',
+    'commentsIds': 'x',
+    'likesForComments': 'y',
+    'commentId': 'z',
+    'like': 'A',
+    'appUserToken': 'B',
+    'likedByMe': 'C',
 
+    '/api/createComment': '/api/-',
     '/api/getCommentsDual': '/api/_',
     '/api/getCommentsMono': '/api/a',
-    '/api/createComment': '/api/-',
+    '/api/getLikesForCommentsIds': '/api/b',
+    '/api/likeComment': '/api/c',
 };
 
 String renamer(String name) {

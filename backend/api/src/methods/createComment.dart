@@ -9,6 +9,7 @@ import '../helpers/normalizeText.dart';
 import '../renamer.dart';
 import '../service/Comments.dart';
 
+// appUserToken=zzz
 // commentatorId=pandora
 // lang=ru
 // text=xyu
@@ -21,6 +22,7 @@ Future<Map<String, dynamic>> createComment(
     await reqInfo.body;
     final getParam = reqInfo.getParam;
 
+    final appUserToken = getParam('appUserToken');
     final commentatorId = getParam('commentatorId');
     final lang = getParam('lang');
     final side = getParam('side');
@@ -29,6 +31,10 @@ Future<Map<String, dynamic>> createComment(
     final ip = reqInfo.ip;
     final userAgent = reqInfo.userAgent;
     final cfUid = reqInfo.cfUid;
+
+    if (appUserToken.length != 36) {
+        return invalidParamsFromClient('invalid token');
+    }
 
     if (text.trim().length < 2) {
         return invalidParamsFromClient('min text length is 2');
@@ -55,6 +61,7 @@ Future<Map<String, dynamic>> createComment(
         ip: ip,
         userAgent: userAgent,
         cfUid: cfUid,
+        appUserToken: appUserToken,
     );
 
     final result = await comments.collection.insert(comment.toMongo());

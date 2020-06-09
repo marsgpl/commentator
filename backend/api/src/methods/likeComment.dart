@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import '../RequestInfo.dart';
-import '../constants.dart';
 import '../errorHandlers/invalidParamsFromClient.dart';
 import '../renamer.dart';
 import '../service/Comments.dart';
@@ -10,21 +9,23 @@ import '../service/Comments.dart';
 // appUserToken=zzz
 // commentatorId=pandora
 // lang=ru
-// limit=20
-// newestId=fffffffff
-// oldestId=fffffffff
-Future<Map<String, dynamic>> getCommentsMono(
+// commentId=xxx
+// like=1 (1 - put like, 0 - remove like)
+Future<Map<String, dynamic>> likeComment(
     RequestInfo reqInfo,
     Db mongo,
 ) async {
+    await reqInfo.body;
     final getParam = reqInfo.getParam;
 
     final appUserToken = getParam('appUserToken');
     final commentatorId = getParam('commentatorId');
     final lang = getParam('lang');
-    int limit = max(1, min(40, int.parse(getParam('limit', defaultValue: '20'))));
-    final newestId = getParam('newestId');
-    final oldestId = getParam('oldestId');
+    final commentId = ObjectId.parse(getParam('commentId'));
+    int like = max(0, min(1, int.parse(getParam('like'))));
+    final ip = reqInfo.ip;
+    final userAgent = reqInfo.userAgent;
+    final cfUid = reqInfo.cfUid;
 
     if (appUserToken.length != 36) {
         return invalidParamsFromClient('invalid token');
@@ -40,24 +41,16 @@ Future<Map<String, dynamic>> getCommentsMono(
         return invalidParamsFromClient('commentatorId + lang does not exist');
     }
 
-    final commentsList = await comments.getList(
-        limit: limit,
-        newestId: newestId,
-        oldestId: oldestId,
+    await comments.like(
+        commentId: commentId,
+        like: like,
+        ip: ip,
+        userAgent: userAgent,
+        cfUid: cfUid,
         appUserToken: appUserToken,
     );
 
-    final positiveCommentsTotalCount = await comments.totalCount(
-        side: COMMENT_SIDE_POSITIVE,
-    );
-
-    final negativeCommentsTotalCount = await comments.totalCount(
-        side: COMMENT_SIDE_NEGATIVE,
-    );
-
     return {
-        renamer('comments'): commentsList,
-        renamer('positiveCommentsTotalCount'): positiveCommentsTotalCount,
-        renamer('negativeCommentsTotalCount'): negativeCommentsTotalCount,
+        renamer('ok'): 1,
     };
 }

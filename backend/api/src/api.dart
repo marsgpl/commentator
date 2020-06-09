@@ -9,6 +9,8 @@ import './errorHandlers/internalError.dart';
 import './methods/getCommentsDual.dart';
 import './methods/getCommentsMono.dart';
 import './methods/createComment.dart';
+import './methods/likeComment.dart';
+import './methods/getLikesForCommentsIds.dart';
 import './renamer.dart';
 import './errorHandlers/invalidParamsFromClient.dart';
 import './RequestInfo.dart';
@@ -50,7 +52,24 @@ Future<void> main() async {
                 answer = (method == 'GET') ?
                     await getCommentsMono(reqInfo, mongo) :
                     methodNotAllowedForRoute(request);
-            } else if (uri.path == '/api/createComment' || uri.path == renamer('/api/createComment')) {
+            } else if (
+                uri.path == '/api/getLikesForCommentsIds' ||
+                uri.path == renamer('/api/getLikesForCommentsIds')
+            ) {
+                answer = (method == 'GET') ?
+                    await getLikesForCommentsIds(reqInfo, mongo) :
+                    methodNotAllowedForRoute(request);
+            } else if (
+                uri.path == '/api/likeComment' ||
+                uri.path == renamer('/api/likeComment')
+            ) {
+                answer = (method == 'POST') ?
+                    await likeComment(reqInfo, mongo) :
+                    methodNotAllowedForRoute(request);
+            } else if (
+                uri.path == '/api/createComment' ||
+                uri.path == renamer('/api/createComment')
+            ) {
                 answer = (method == 'POST') ?
                     await createComment(reqInfo, mongo) :
                     methodNotAllowedForRoute(request);

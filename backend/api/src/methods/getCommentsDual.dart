@@ -7,6 +7,7 @@ import '../errorHandlers/invalidParamsFromClient.dart';
 import '../renamer.dart';
 import '../service/Comments.dart';
 
+// appUserToken=zzz
 // commentatorId=pandora
 // lang=ru
 // limit=20
@@ -20,6 +21,7 @@ Future<Map<String, dynamic>> getCommentsDual(
 ) async {
     final getParam = reqInfo.getParam;
 
+    final appUserToken = getParam('appUserToken');
     final commentatorId = getParam('commentatorId');
     final lang = getParam('lang');
     int limit = max(1, min(40, int.parse(getParam('limit', defaultValue: '20'))));
@@ -27,6 +29,10 @@ Future<Map<String, dynamic>> getCommentsDual(
     final oldestPositiveId = getParam('oldestPositiveId');
     final newestNegativeId = getParam('newestNegativeId');
     final oldestNegativeId = getParam('oldestNegativeId');
+
+    if (appUserToken.length != 36) {
+        return invalidParamsFromClient('invalid token');
+    }
 
     final comments = Comments(
         mongo: mongo,
@@ -43,6 +49,7 @@ Future<Map<String, dynamic>> getCommentsDual(
         limit: limit,
         newestId: newestPositiveId,
         oldestId: oldestPositiveId,
+        appUserToken: appUserToken,
     );
 
     final negativeComments = await comments.getList(
@@ -50,6 +57,7 @@ Future<Map<String, dynamic>> getCommentsDual(
         limit: limit,
         newestId: newestNegativeId,
         oldestId: oldestNegativeId,
+        appUserToken: appUserToken,
     );
 
     final positiveCommentsTotalCount = await comments.totalCount(
