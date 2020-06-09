@@ -81,6 +81,7 @@ class CommentsDual extends Comments {
         const params = {
             [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
             [API_PARAM_LANG]: API_LANG,
+            [API_PARAM_APP_USER_TOKEN]: APP_USER_TOKEN,
         };
 
         if (isPagination) {

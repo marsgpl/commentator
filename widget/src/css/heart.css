@@ -1,0 +1,34 @@
+.heart {
+    transition: transform .1s;
+}
+
+.heart__fill {
+    display: none;
+}
+
+.heart__active {
+    animation: heartActivate .25s ease-out;
+}
+
+.heart__active .heart__fill {
+    display: block;
+    fill: #E75051;
+}
+
+.heart__active .heart__border {
+    display: none;
+}
+
+@keyframes heartActivate {
+    0% {
+        opacity: .5;
+        transform: scale(1);
+    }
+    75% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

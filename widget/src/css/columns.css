@@ -26,11 +26,11 @@
 }
 
 .columns__column_positive .comment {
-    background: #e8eaf8;
+    background: #ebedf9;
 }
 
 .columns__column_negative .comment {
-    background: #fedcdc;
+    background: #fee1e1;
 }
 
 .columns__no-msgs {

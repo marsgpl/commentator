@@ -1,3 +1,7 @@
+const STORAGE_KEY_AUTHOR_NAME = '_';
+const STORAGE_KEY_IS_ANON = '-';
+const STORAGE_KEY_APP_USER_TOKEN = 'a';
+
 const API_METHOD_GET = 'GET';
 const API_METHOD_POST = 'POST';
 
@@ -35,10 +39,19 @@ const API_PARAM_NEWEST_POSITIVE_ID = 's';
 const API_PARAM_OLDEST_POSITIVE_ID = 't';
 const API_PARAM_NEWEST_NEGATIVE_ID = 'u';
 const API_PARAM_OLDEST_NEGATIVE_ID = 'v';
+const API_PARAM_LIKES = 'w';
+const API_PARAM_COMMENTS_IDS = 'x';
+const API_PARAM_LIKES_FOR_COMMENTS = 'y';
+const API_PARAM_COMMENT_ID = 'z';
+const API_PARAM_LIKE = 'A';
+const API_PARAM_APP_USER_TOKEN = 'B';
+const API_PARAM_LIKED_BY_ME = 'C';
 
+const API_METHOD_CREATE_COMMENT = '/-';
 const API_METHOD_GET_COMMENTS_DUAL = '/_';
 const API_METHOD_GET_COMMENTS_MONO = '/a';
-const API_METHOD_CREATE_COMMENT = '/-';
+const API_METHOD_GET_LIKES_FOR_COMMENTS_IDS = '/b';
+const API_METHOD_LIKE_COMMENT = '/c';
 
 const apiExtractError = function(jsonResponse) {
     jsonResponse = jsonResponse || apiCommunicationError;

@@ -7,9 +7,6 @@ const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_NAME = '.create-comment-modal__input-
 const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_ANON = '.create-comment-modal__input-anon';
 const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_REMEMBER_NAME = '.create-comment-modal__input-remember-name';
 
-const STORAGE_KEY_AUTHOR_NAME = '_';
-const STORAGE_KEY_IS_ANON = '-';
-
 class CreateCommentModal {
     /**
      * @param {Dialog} dialog
@@ -137,6 +134,7 @@ class CreateCommentModal {
             [API_PARAM_TEXT]: this.commentText,
             [API_PARAM_SIDE]: this.commentSide,
             [API_PARAM_NAME]: this.authorName,
+            [API_PARAM_APP_USER_TOKEN]: APP_USER_TOKEN,
         }, json => {
             if (apiRequestFailed(json)) {
                 const error = apiExtractError(json);

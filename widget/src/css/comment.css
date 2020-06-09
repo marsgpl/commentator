@@ -73,3 +73,30 @@
 .comment__show-full:active {
     color: #000;
 }
+
+.comment__action-bar {
+    display: flex;
+    margin-top: 5px;
+}
+
+.comment__like {
+    display: flex;
+    cursor: pointer;
+    position: relative;
+    left: -5px;
+}
+
+.comment__like .heart {
+    width: 24px;
+    height: 24px;
+}
+
+.comment__like:hover .heart {
+    transform: scale(1.15);
+}
+
+.comment__likes-count {
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0 4px 0 2px;
+}
