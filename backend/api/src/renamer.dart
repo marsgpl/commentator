@@ -18,8 +18,13 @@ const DICT = {
     'positiveCommentsTotalCount': 'p',
     'negativeCommentsTotalCount': 'q',
     'oldestId': 'r',
+    'newestPositiveId': 's',
+    'oldestPositiveId': 't',
+    'newestNegativeId': 'u',
+    'oldestNegativeId': 'v',
 
-    '/api/getComments': '/api/_',
+    '/api/getCommentsDual': '/api/_',
+    '/api/getCommentsMono': '/api/a',
     '/api/createComment': '/api/-',
 };
 

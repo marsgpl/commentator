@@ -35,7 +35,7 @@ class Comment implements Comparable<Comment> {
 
     Comment.fromMongo(Map<String, dynamic> mongoData) :
         id = mongoData['_id'].toHexString() ?? Uuid().v4(),
-        createdAt = mongoData['createdAt'] ?? DateTime.now().toString(),
+        createdAt = mongoData['createdAt'] ?? DateTime.now(),
         text = mongoData['text'] ?? '',
         side = mongoData['side'] ?? '',
         name = mongoData['name'] ?? '',
@@ -56,7 +56,7 @@ class Comment implements Comparable<Comment> {
 
     Map<String, dynamic> toJson() => {
         renamer('id'): id,
-        renamer('createdAt'): createdAt.toString(),
+        renamer('createdAt'): createdAt.toIso8601String(),
         renamer('text'): text,
         renamer('side'): side,
         renamer('name'): name,

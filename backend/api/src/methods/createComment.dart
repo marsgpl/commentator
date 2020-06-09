@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import '../RequestInfo.dart';
@@ -10,7 +9,7 @@ import '../helpers/normalizeText.dart';
 import '../renamer.dart';
 import '../service/Comments.dart';
 
-// commentatorId=abortion
+// commentatorId=pandora
 // lang=ru
 // text=xyu
 // side=p

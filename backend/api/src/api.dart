@@ -6,7 +6,8 @@ import './errorHandlers/methodNotAllowedForRoute.dart';
 import './errorHandlers/routeNotFound.dart';
 import './errorHandlers/internalError.dart';
 
-import './methods/getComments.dart';
+import './methods/getCommentsDual.dart';
+import './methods/getCommentsMono.dart';
 import './methods/createComment.dart';
 import './renamer.dart';
 import './errorHandlers/invalidParamsFromClient.dart';
@@ -35,9 +36,19 @@ Future<void> main() async {
         try {
             if (method == 'OPTIONS') {
                 answer = {};
-            } else if (uri.path == '/api/getComments' || uri.path == renamer('/api/getComments')) {
+            } else if (
+                uri.path == '/api/getCommentsDual' ||
+                uri.path == renamer('/api/getCommentsDual')
+            ) {
                 answer = (method == 'GET') ?
-                    await getComments(reqInfo, mongo) :
+                    await getCommentsDual(reqInfo, mongo) :
+                    methodNotAllowedForRoute(request);
+            } else if (
+                uri.path == '/api/getCommentsMono' ||
+                uri.path == renamer('/api/getCommentsMono')
+            ) {
+                answer = (method == 'GET') ?
+                    await getCommentsMono(reqInfo, mongo) :
                     methodNotAllowedForRoute(request);
             } else if (uri.path == '/api/createComment' || uri.path == renamer('/api/createComment')) {
                 answer = (method == 'POST') ?
