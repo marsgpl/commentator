@@ -48,9 +48,15 @@ Future<Map<String, dynamic>> getCommentsMono(
         side: COMMENT_SIDE_NEGATIVE,
     );
 
+    final likesForLatestComments = await comments.getLikesForLatest(
+        limit: limit,
+        anySide: true,
+    );
+
     return {
         renamer('comments'): commentsList,
         renamer('positiveCommentsTotalCount'): positiveCommentsTotalCount,
         renamer('negativeCommentsTotalCount'): negativeCommentsTotalCount,
+        renamer('likesForLatestComments'): likesForLatestComments,
     };
 }

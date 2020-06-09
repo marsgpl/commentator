@@ -22,6 +22,8 @@ const DICT = {
     'oldestPositiveId': 't',
     'newestNegativeId': 'u',
     'oldestNegativeId': 'v',
+    'likes': 'w',
+    'likesForLatestComments': 'x',
 
     '/api/getCommentsDual': '/api/_',
     '/api/getCommentsMono': '/api/a',

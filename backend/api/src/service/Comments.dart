@@ -67,4 +67,28 @@ class Comments {
 
         return collection.count(selector);
     }
+
+    Future<Map<String, int>> getLikesForLatest({
+        int limit = 20,
+        bool anySide = true,
+    }) async {
+        Map<String, int> result = {};
+
+        List<Comment> comments;
+
+        if (anySide) {
+            comments = await this.getList(limit: limit);
+        } else {
+            final positive = await this.getList(limit: limit, side: COMMENT_SIDE_POSITIVE);
+            final negative = await this.getList(limit: limit, side: COMMENT_SIDE_NEGATIVE);
+
+            comments = positive + negative;
+        }
+
+        comments.forEach((comment) {
+            result[comment.id] = comment.likes;
+        });
+
+        return result;
+    }
 }
