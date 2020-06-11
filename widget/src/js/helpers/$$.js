@@ -4,4 +4,4 @@ const $$ = function(cssSelector, hostNodeCssSelector = document) {
     } else {
         return cssSelector;
     }
-}
+};

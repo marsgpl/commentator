@@ -1,21 +1,3 @@
-const CSS_CLASS_COLUMNS_PAGINATION_LOADER = '.columns__pagination-loader';
-const CSS_CLASS_COLUMNS_COLUMN = '.columns__column';
-const CSS_CLASS_COLUMNS_NO_MSGS = '.columns__no-msgs';
-const CSS_CLASS_COMMENT = '.comment';
-const CSS_CLASS_COMMENT_AUTHOR = '.comment__author';
-const CSS_CLASS_COMMENT_DATE = '.comment__date';
-const CSS_CLASS_COMMENT_TEXT = '.comment__text';
-const CSS_CLASS_COMMENT_TEXT_BIG = '.comment__text_big';
-const CSS_CLASS_COMMENT_TEXT_WRAP = '.comment__text-wrap';
-const CSS_CLASS_COMMENT_TEXT_WRAP_LOOSE = '.comment__text-wrap_loose';
-const CSS_CLASS_COMMENT_SHOW_FULL = '.comment__show-full';
-const CSS_CLASS_COMMENT_ACTION_BAR = '.comment__action-bar';
-const CSS_CLASS_COMMENT_LIKE = '.comment__like';
-const CSS_CLASS_COMMENT_LIKES_COUNT = '.comment__likes-count';
-
-const FIELD_COMMENT_ID = '_';
-const FIELD_DATE = '_';
-
 class Comments {
     /**
      * @param {Dialog} dialog
@@ -162,7 +144,7 @@ class Comments {
     loadLikesForCommentsIds(visibleCommentsIds) {
         if (visibleCommentsIds.length === 0) return;
 
-        ajax(API_METHOD_GET, API_BASE_URL + API_METHOD_GET_LIKES_FOR_COMMENTS_IDS, {
+        ajax(API_HTTP_METHOD_GET, API_BASE_URL + API_METHOD_GET_LIKES_FOR_COMMENTS_IDS, {
             [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
             [API_PARAM_LANG]: API_LANG,
             [API_PARAM_COMMENTS_IDS]: visibleCommentsIds.join(','),
@@ -202,10 +184,10 @@ class Comments {
 
         likesCount.innerText = Math.max(0, (parseInt(likesCount.innerText, 10) || 0) + delta) || '';
 
-        ajax(API_METHOD_POST, API_BASE_URL + API_METHOD_LIKE_COMMENT, {
+        ajax(API_HTTP_METHOD_POST, API_BASE_URL + API_METHOD_LIKE_COMMENT, {
             [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
             [API_PARAM_LANG]: API_LANG,
-            [API_PARAM_COMMENT_ID]: comment[FIELD_COMMENT_ID],
+            [API_PARAM_COMMENT_ID]: comment[HTML_NODE_FIELD_COMMENT_ID],
             [API_PARAM_LIKE]: isLiked ? '0' : '1',
             [API_PARAM_APP_USER_TOKEN]: APP_USER_TOKEN,
         });
@@ -231,7 +213,7 @@ class Comments {
             this.addPaginationLoaders();
         }
 
-        ajax(API_METHOD_GET, url, params, json => {
+        ajax(API_HTTP_METHOD_GET, url, params, json => {
             if (apiRequestFailed(json)) {
                 const error = apiExtractError(json);
 
@@ -259,11 +241,11 @@ class Comments {
             this.removeLoaders();
 
             this.statusRow.setSide(
-                API_COMMENT_SIDE_POSITIVE,
+                API_VALUE_COMMENT_SIDE_POSITIVE,
                 json[API_PARAM_POSITIVE_COMMENTS_TOTAL_COUNT]);
 
             this.statusRow.setSide(
-                API_COMMENT_SIDE_NEGATIVE,
+                API_VALUE_COMMENT_SIDE_NEGATIVE,
                 json[API_PARAM_NEGATIVE_COMMENTS_TOTAL_COUNT]);
 
             this.addComments(
@@ -289,7 +271,7 @@ class Comments {
 
         commentsListFromApi.forEach(commentFromApi => {
             const id = commentFromApi[API_PARAM_ID];
-            const isPositive = commentFromApi[API_PARAM_SIDE] === API_COMMENT_SIDE_POSITIVE;
+            const isPositive = commentFromApi[API_PARAM_SIDE] === API_VALUE_COMMENT_SIDE_POSITIVE;
 
             if (this.shownComments[id]) return;
 
@@ -300,11 +282,12 @@ class Comments {
             const date = $(CSS_CLASS_COMMENT_DATE, comment);
             const like = $(CSS_CLASS_COMMENT_LIKE, comment);
             const likesCount = $(CSS_CLASS_COMMENT_LIKES_COUNT, comment);
+            const reply = $(CSS_CLASS_COMMENT_REPLY, comment);
 
             this.shownComments[id] = comment;
 
-            comment[FIELD_COMMENT_ID] = id;
-            date[FIELD_DATE] = new Date(commentFromApi[API_PARAM_CREATED_AT]);
+            comment[HTML_NODE_FIELD_COMMENT_ID] = id;
+            date[HTML_NODE_FIELD_DATE] = new Date(commentFromApi[API_PARAM_CREATED_AT]);
             author.innerText = commentFromApi[API_PARAM_NAME] || '#lang#comment_anonymous_name#';
             text.innerText = commentFromApi[API_PARAM_TEXT];
             likesCount.innerText = commentFromApi[API_PARAM_LIKES] || '';
@@ -318,7 +301,7 @@ class Comments {
             bind(date, 'click', () => {
                 this.dialog.showModal(
                     '#lang#comment_popup_creation_time_title#',
-                    date[FIELD_DATE].toString().replace(' (', '<br>('),
+                    date[HTML_NODE_FIELD_DATE].toString().replace(' (', '<br>('),
                 );
             });
 
@@ -352,7 +335,7 @@ class Comments {
 
         const showFull = createNode('a', CSS_CLASS_COMMENT_SHOW_FULL);
 
-        showFull.href = `#comment:${comment[FIELD_COMMENT_ID]}`;
+        showFull.href = `#comment:${comment[HTML_NODE_FIELD_COMMENT_ID]}`;
         showFull.innerText = '#lang#show_full_comment#';
 
         bind(showFull, 'click', event => {
@@ -367,7 +350,7 @@ class Comments {
     }
 
     refreshDate(node) {
-        const date = node[FIELD_DATE];
+        const date = node[HTML_NODE_FIELD_DATE];
         const now = new Date;
 
         let value = '';

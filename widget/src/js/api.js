@@ -1,9 +1,5 @@
-const STORAGE_KEY_AUTHOR_NAME = '_';
-const STORAGE_KEY_IS_ANON = '-';
-const STORAGE_KEY_APP_USER_TOKEN = 'a';
-
-const API_METHOD_GET = 'GET';
-const API_METHOD_POST = 'POST';
+const API_HTTP_METHOD_GET = 'GET';
+const API_HTTP_METHOD_POST = 'POST';
 
 const API_BASE_URL = 'http://127.0.0.1:42080/api';
 const API_COMMENTATOR_ID = 'pandora';
@@ -13,8 +9,8 @@ const API_LANG = 'ru';
 // const API_COMMENTATOR_ID = '#lang#api_commentator_id#';
 // const API_LANG = '#lang#language#';
 
-const API_COMMENT_SIDE_POSITIVE = 'p';
-const API_COMMENT_SIDE_NEGATIVE = 'n';
+const API_VALUE_COMMENT_SIDE_POSITIVE = 'p';
+const API_VALUE_COMMENT_SIDE_NEGATIVE = 'n';
 
 const API_PARAM_COMMENTATOR_ID = '_';
 const API_PARAM_LANG = 'a';

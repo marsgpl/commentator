@@ -1,4 +1,4 @@
-function x(event) {
+const x = function(event) {
     const touch = event.touches && event.touches[0];
     return touch ? touch.clientX : event.clientX;
-}
+};

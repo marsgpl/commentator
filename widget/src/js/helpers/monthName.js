@@ -1,4 +1,8 @@
-const MONTHS = [
+const monthName = function(monthIndexFrom0) {
+    return monthName.months[monthIndexFrom0] || '';
+}
+
+monthName.months = [
     '#lang#month_jan#',
     '#lang#month_feb#',
     '#lang#month_mar#',
@@ -12,7 +16,3 @@ const MONTHS = [
     '#lang#month_nov#',
     '#lang#month_dec#',
 ];
-
-const monthName = function(monthIndexFrom0) {
-    return MONTHS[monthIndexFrom0] || '';
-}

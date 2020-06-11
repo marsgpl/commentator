@@ -1,10 +1,3 @@
-const CSS_CLASS_STATUS_COLUMN_LEFT = '.status__column_left';
-const CSS_CLASS_STATUS_COLUMN_RIGHT = '.status__column_right';
-const CSS_CLASS_STATUS_COUNTER = '.status__counter';
-const CSS_CLASS_STATUS_LIBRA = '.status__libra';
-const CSS_CLASS_LIBRA_LEFT = '.libra_left';
-const CSS_CLASS_LIBRA_RIGHT = '.libra_right';
-
 class StatusRow {
     constructor() {
         this._libraEl = $(CSS_CLASS_STATUS_LIBRA);
@@ -13,13 +6,13 @@ class StatusRow {
     }
 
     setSide(side, value) {
-        const oldValue = side === API_COMMENT_SIDE_POSITIVE ?
+        const oldValue = side === API_VALUE_COMMENT_SIDE_POSITIVE ?
             this.getPositiveSideCounterValue() :
             this.getNegativeSideCounterValue();
 
         if (value < oldValue) return;
 
-        const node = side === API_COMMENT_SIDE_POSITIVE ?
+        const node = side === API_VALUE_COMMENT_SIDE_POSITIVE ?
             this._positiveSideCounterEl :
             this._negativeSideCounterEl;
 
@@ -29,7 +22,7 @@ class StatusRow {
     }
 
     incrementSide(side, amount = 1) {
-        const oldValue = side === API_COMMENT_SIDE_POSITIVE ?
+        const oldValue = side === API_VALUE_COMMENT_SIDE_POSITIVE ?
             this.getPositiveSideCounterValue() :
             this.getNegativeSideCounterValue();
 

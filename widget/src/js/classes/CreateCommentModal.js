@@ -1,12 +1,3 @@
-const CSS_CLASS_CREATE_COMMENT_MODAL = '.create-comment-modal';
-const CSS_CLASS_CREATE_COMMENT_MODAL_FORM = '.create-comment-modal__form';
-const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_TEXT = '.create-comment-modal__input-text';
-const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_POSITIVE = '.create-comment-modal__input-side-positive';
-const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_NEGATIVE = '.create-comment-modal__input-side-negative';
-const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_NAME = '.create-comment-modal__input-name';
-const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_ANON = '.create-comment-modal__input-anon';
-const CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_REMEMBER_NAME = '.create-comment-modal__input-remember-name';
-
 class CreateCommentModal {
     /**
      * @param {Dialog} dialog
@@ -121,14 +112,16 @@ class CreateCommentModal {
         }
 
         this.commentText = text;
-        this.commentSide = sidePositive ? API_COMMENT_SIDE_POSITIVE : API_COMMENT_SIDE_NEGATIVE;
+        this.commentSide = sidePositive ?
+            API_VALUE_COMMENT_SIDE_POSITIVE :
+            API_VALUE_COMMENT_SIDE_NEGATIVE;
         this.authorName = isAnon ? '' : name;
 
         return true;
     }
 
     submitForm(then) {
-        ajax(API_METHOD_POST, API_BASE_URL + API_METHOD_CREATE_COMMENT, {
+        ajax(API_HTTP_METHOD_POST, API_BASE_URL + API_METHOD_CREATE_COMMENT, {
             [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
             [API_PARAM_LANG]: API_LANG,
             [API_PARAM_TEXT]: this.commentText,

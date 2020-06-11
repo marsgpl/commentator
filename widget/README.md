@@ -9,7 +9,6 @@ Embeddable
 
 ## TODO
 
-    лайки
     ответить на коммент
     кнопка "пожаловаться"
     открывать коммент в попапе по ссылке #comment:id
@@ -17,4 +16,3 @@ Embeddable
     [wait:Kraspa] opengraph tags - https://ogp.me/
     [wait:Kraspa] https для всех ссылок Артема: lang.json title + nginx conf pp tos
     [wait:Kraspa] интеграция рекламы
-    [wait:Kraspa] вставить видео с ютуба в комментатор

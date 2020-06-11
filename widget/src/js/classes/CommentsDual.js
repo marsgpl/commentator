@@ -1,6 +1,3 @@
-const CSS_CLASS_COLUMNS_COLUMN_POSITIVE = '.columns__column_positive';
-const CSS_CLASS_COLUMNS_COLUMN_NEGATIVE = '.columns__column_negative';
-
 class CommentsDual extends Comments {
     constructor(dialog, statusRow) {
         super(dialog, statusRow);

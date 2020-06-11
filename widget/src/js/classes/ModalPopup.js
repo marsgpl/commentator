@@ -1,13 +1,3 @@
-const CSS_CLASS_MODAL_POPUP = '.modal-popup';
-const CSS_CLASS_MODAL_POPUP_SHOWN = '.modal-popup_shown';
-const CSS_CLASS_MODAL_POPUP_HIDDEN = '.modal-popup_hidden';
-const CSS_CLASS_MODAL_POPUP_CONTENT = '.modal-popup__content';
-const CSS_CLASS_MODAL_POPUP_CLOSE = '.modal-popup__close';
-const CSS_CLASS_MODAL_POPUP_TITLE = '.modal-popup__title';
-const CSS_CLASS_MODAL_POPUP_BODY = '.modal-popup__body';
-const CSS_CLASS_MODAL_POPUP_BUTTONS = '.modal-popup__buttons';
-const CSS_CLASS_WINDOW_HAS_MODALS_SHOWN = '.window-has-modals-shown';
-
 class ModalPopup {
     constructor(cssSelector, onWindowResize = null) {
         /** @type {number} */ this.x;

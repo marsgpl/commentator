@@ -1,8 +1,3 @@
-const CSS_CLASS_COLUMNS_COLUMN_MONO = '.columns__column_mono';
-const CSS_CLASS_COMMENT_WRAP = '.comment__wrap';
-const CSS_CLASS_COMMENT_WRAP_POSITIVE = '.comment__wrap_positive';
-const CSS_CLASS_COMMENT_WRAP_NEGATIVE = '.comment__wrap_negative';
-
 class CommentsMono extends Comments {
     constructor(dialog, statusRow) {
         super(dialog, statusRow);

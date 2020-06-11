@@ -1,5 +1,3 @@
-const CSS_CLASS_DIALOG = '.dialog';
-
 class Dialog {
     constructor() {
         this.modal = new ModalPopup(CSS_CLASS_DIALOG);

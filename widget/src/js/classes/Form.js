@@ -1,5 +1,3 @@
-const CSS_CLASS_FORM_STATE_BUSY = '.form_state_busy';
-
 class Form {
     constructor(cssSelector, checkFormBeforeSubmit, submitForm) {
         this.submitting = false;
