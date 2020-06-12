@@ -82,7 +82,7 @@ class Comments {
         return result;
     }
 
-    Future<Map<String, int>> getLikesForIds({
+    Future<Map<String, int>> getUpdatesForIds({
         List<ObjectId> ids,
         int limit = 50,
     }) async {

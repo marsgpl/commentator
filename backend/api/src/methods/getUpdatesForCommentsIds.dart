@@ -8,7 +8,7 @@ import '../service/Comments.dart';
 // commentatorId=pandora
 // lang=ru
 // commentsIds=[xxx,yyy,zzz]
-Future<Map<String, dynamic>> getLikesForCommentsIds(
+Future<Map<String, dynamic>> getUpdatesForCommentsIds(
     RequestInfo reqInfo,
     Db mongo,
 ) async {
@@ -28,9 +28,9 @@ Future<Map<String, dynamic>> getLikesForCommentsIds(
         return invalidParamsFromClient('commentatorId + lang does not exist');
     }
 
-    final likesForComments = await comments.getLikesForIds(ids: commentsIds);
+    final updatesForComments = await comments.getUpdatesForIds(ids: commentsIds);
 
     return {
-        renamer('likesForComments'): likesForComments,
+        renamer('updatesForComments'): updatesForComments,
     };
 }

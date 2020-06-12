@@ -10,7 +10,7 @@ import './methods/getCommentsDual.dart';
 import './methods/getCommentsMono.dart';
 import './methods/createComment.dart';
 import './methods/likeComment.dart';
-import './methods/getLikesForCommentsIds.dart';
+import './methods/getUpdatesForCommentsIds.dart';
 import './renamer.dart';
 import './errorHandlers/invalidParamsFromClient.dart';
 import './RequestInfo.dart';
@@ -53,11 +53,11 @@ Future<void> main() async {
                     await getCommentsMono(reqInfo, mongo) :
                     methodNotAllowedForRoute(request);
             } else if (
-                uri.path == '/api/getLikesForCommentsIds' ||
-                uri.path == renamer('/api/getLikesForCommentsIds')
+                uri.path == '/api/getUpdatesForCommentsIds' ||
+                uri.path == renamer('/api/getUpdatesForCommentsIds')
             ) {
                 answer = (method == 'GET') ?
-                    await getLikesForCommentsIds(reqInfo, mongo) :
+                    await getUpdatesForCommentsIds(reqInfo, mongo) :
                     methodNotAllowedForRoute(request);
             } else if (
                 uri.path == '/api/likeComment' ||
