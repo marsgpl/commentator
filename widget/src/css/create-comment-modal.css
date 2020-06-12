@@ -2,10 +2,6 @@
     max-width: 500px;
 }
 
-.create-comment-modal__form .form__legal-text {
-    user-select: none;
-}
-
 .create-comment-modal__form .input_textarea {
     height: 141px;
 }

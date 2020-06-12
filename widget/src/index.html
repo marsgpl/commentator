@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="css/columns.css" />
         <link rel="stylesheet" href="css/columns@media.css" />
         <link rel="stylesheet" href="css/create-comment-modal.css" />
-        <link rel="stylesheet" href="css/create-comment-modal@media.css" />
+        <link rel="stylesheet" href="css/reply-to-comment-modal.css" />
 
         <script src="js/constants/keyCodes.js"></script>
         <script src="js/constants/cssClasses.js"></script>
@@ -76,6 +76,7 @@
         <script src="js/classes/CommentsMono.js"></script>
         <script src="js/classes/CommentsDual.js"></script>
         <script src="js/classes/CreateCommentModal.js"></script>
+        <script src="js/classes/ReplyToCommentModal.js"></script>
     </head>
     <body>
         <header class="header">
@@ -121,7 +122,7 @@
             <button class="button button_size_big footer__button">#lang#create_comment#</button>
         </footer>
 
-        <div class="create-comment-modal modal-popup modal-popup_with-close-button">
+        <div class="create-comment-modal modal-popup modal-popup_with-close-button modal-popup_with-form">
             <section class="modal-popup__content">
                 <h1 class="modal-popup__title">#lang#title#</h1>
                 <button class="modal-popup__close"></button>
@@ -165,6 +166,40 @@
             </section>
         </div>
 
+        <div class="reply-to-comment-modal modal-popup modal-popup_with-close-button modal-popup_with-form">
+            <section class="modal-popup__content">
+                <h1 class="modal-popup__title reply-to-comment-modal__title"></h1>
+                <button class="modal-popup__close"></button>
+                <form class="form modal-popup__form reply-to-comment-modal__form">
+                    <label class="form__row">
+                        <span class="form__label">#lang#comment_reply_your_answer_text#</span>
+                        <textarea class="input_textarea reply-to-comment-modal__input-text" maxlength="#lang#comment_reply_your_answer_text_max_length#"></textarea>
+                    </label>
+                    <label class="form__row form__row_pad">
+                        <span class="form__label">#lang#your_name_input_label#</span>
+                        <input type="text" class="input_text reply-to-comment-modal__input-name" maxlength="#lang#comment_author_name_max_length#" />
+                    </label>
+                    <div class="form__row form__row_columns form__row_pad_half">
+                        <label class="form__col form__checkbox">
+                            <input class="input_check reply-to-comment-modal__input-anon" type="checkbox" />
+                            <span class="form__label">#lang#anon_input_label#</span>
+                        </label>
+                        <label class="form__col form__checkbox">
+                            <input class="input_check reply-to-comment-modal__input-remember-name" type="checkbox" />
+                            <span class="form__label">#lang#remember_input_name#</span>
+                        </label>
+                    </div>
+                    <div class="form__row form__row_center form__row_pad_double">
+                        <button class="button button_size_big">#lang#comment_reply_submit#</button>
+                    </div>
+                    <div class="form__row form__row_center form__legal-text">
+                        #lang#create_comment_legal#
+                    </div>
+                    <div class="loader form__loader"></div>
+                </form>
+            </section>
+        </div>
+
         <div class="dialog modal-popup modal-popup_with-close-button">
             <section class="modal-popup__content">
                 <h1 class="modal-popup__title"></h1>
@@ -183,7 +218,7 @@
             <div class="comment">
                 <div class="comment__header">
                     <div class="comment__author"></div>
-                    <div class="comment__date"></div>
+                    <div class="comment__date comment__text-action"></div>
                 </div>
                 <div class="comment__text-wrap">
                     <div class="comment__text"></div>
@@ -192,6 +227,7 @@
                     <div class="comment__like">
                         <div class="comment__likes-count"></div>
                     </div>
+                    <div class="comment__reply comment__text-action">#lang#comment_reply#</div>
                 </div>
             </div>
         </div>

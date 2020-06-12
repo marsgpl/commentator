@@ -1,0 +1,7 @@
+.reply-to-comment-modal .modal-popup__content {
+    max-width: 500px;
+}
+
+.reply-to-comment-modal__form .input_textarea {
+    height: 141px;
+}

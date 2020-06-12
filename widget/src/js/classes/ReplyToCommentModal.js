@@ -1,36 +1,32 @@
-class CreateCommentModal {
+class ReplyToCommentModal {
     /**
      * @param {Dialog} dialog
-     * @param {StatusRow} statusRow
      */
-    constructor(dialog, statusRow) {
-        /** @type {string} */ this.commentText;
-        /** @type {string} */ this.commentSide;
+    constructor(dialog) {
+        /** @type {string} */ this.replyText;
         /** @type {string} */ this.authorName;
         /** @type {string} */ this.authorNameFromMemory;
         /** @type {boolean} */ this.isAnonFromMemory;
         /** @type {Array<Comments>} */ this.commentsColumns;
+        /** @type {!Element} */ this.targetComment;
 
         this.dialog = dialog;
-        this.statusRow = statusRow;
 
         this.modal = new ModalPopup(
-            CSS_CLASS_CREATE_COMMENT_MODAL,
+            CSS_CLASS_REPLY_TO_COMMENT_MODAL,
             this.initMemory.bind(this),
         );
 
         this.form = new Form(
-            CSS_CLASS_CREATE_COMMENT_MODAL_FORM,
+            CSS_CLASS_REPLY_TO_COMMENT_MODAL_FORM,
             this.checkFormBeforeSubmit.bind(this),
             this.submitForm.bind(this),
         );
 
-        this._sidePositiveEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_POSITIVE);
-        this._sideNegativeEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_SIDE_NEGATIVE);
-        this._anonEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_ANON);
-        this._rememberNameEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_REMEMBER_NAME);
-        this._textEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_TEXT);
-        this._nameEl = $(CSS_CLASS_CREATE_COMMENT_MODAL_INPUT_NAME);
+        this._anonEl = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_INPUT_ANON);
+        this._rememberNameEl = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_INPUT_REMEMBER_NAME);
+        this._textEl = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_INPUT_TEXT);
+        this._nameEl = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_INPUT_NAME);
 
         this.toggleMemory = this.toggleMemory.bind(this);
 
@@ -66,16 +62,22 @@ class CreateCommentModal {
 
     resetForm() {
         this._textEl.value = '';
-        this._sidePositiveEl.checked = false;
-        this._sideNegativeEl.checked = false;
 
         this.initMemory();
     }
 
+    setTargetComment(comment) {
+        this.targetComment = comment;
+
+        const title = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_TITLE);
+        const commentText = $(CSS_CLASS_COMMENT_TEXT, comment).innerText;
+
+        title.innerText = commentText;
+        title.title = commentText;
+    }
+
     checkFormBeforeSubmit() {
         const text = this._textEl.value.trim();
-        const sidePositive = this._sidePositiveEl.checked;
-        const sideNegative = this._sideNegativeEl.checked;
         const name = this._nameEl.value.trim();
         const isAnon = this._anonEl.checked;
 
@@ -83,56 +85,41 @@ class CreateCommentModal {
 
         if (text.length < 2) {
             this.dialog.showModal(
-                '#lang#create_comment_error_empty_text_title#',
-                '#lang#create_comment_error_empty_text_message#',
-                '#lang#create_comment_error_empty_text_button#'
+                '#lang#comment_reply_error_empty_text_title#',
+                '#lang#comment_reply_error_empty_text_message#',
+                '#lang#comment_reply_error_empty_text_button#'
             );
 
             return false;
         }
 
-        if (!sidePositive && !sideNegative) {
-            this.dialog.showModal(
-                '#lang#create_comment_error_no_side_title#',
-                '#lang#create_comment_error_no_side_message#',
-                '#lang#create_comment_error_no_side_button#'
-            );
-
-            return false;
-        }
-
-        this.commentText = text;
-        this.commentSide = sidePositive ?
-            API_VALUE_COMMENT_SIDE_POSITIVE :
-            API_VALUE_COMMENT_SIDE_NEGATIVE;
+        this.replyText = text;
         this.authorName = isAnon ? '' : name;
 
         return true;
     }
 
     submitForm(then) {
-        ajax(API_HTTP_METHOD_POST, API_BASE_URL + API_METHOD_CREATE_COMMENT, {
+        ajax(API_HTTP_METHOD_POST, API_BASE_URL + API_METHOD_REPLY_TO_COMMENT, {
             [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
             [API_PARAM_LANG]: API_LANG,
-            [API_PARAM_TEXT]: this.commentText,
-            [API_PARAM_SIDE]: this.commentSide,
+            [API_PARAM_TEXT]: this.replyText,
             [API_PARAM_NAME]: this.authorName,
             [API_PARAM_APP_USER_TOKEN]: APP_USER_TOKEN,
+            [API_PARAM_COMMENT_ID]: this.targetComment[HTML_NODE_FIELD_COMMENT_ID],
         }, json => {
             if (apiRequestFailed(json)) {
                 const error = apiExtractError(json);
 
                 this.dialog.showModal(
-                    '#lang#create_comment_error_failed_title#',
-                    `#lang#create_comment_error_failed_message#<br><br>${error}`,
-                    '#lang#create_comment_error_failed_button#'
+                    '#lang#comment_reply_error_failed_title#',
+                    `#lang#comment_reply_error_failed_message#<br><br>${error}`,
+                    '#lang#comment_reply_error_failed_button#'
                 );
             } else {
-                this.modal.hide();
                 this.resetForm();
-                window.scrollTo(0, 0);
-                this.statusRow.incrementSide(this.commentSide);
-                this.commentsColumns.forEach(comments => comments.loadComments());
+                this.modal.hide();
+                alert('TODO: update visible comments');
             }
 
             then();

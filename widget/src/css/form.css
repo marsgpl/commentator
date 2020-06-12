@@ -30,6 +30,7 @@
 .form__legal-text {
     font-size: 14px;
     color: #aaa;
+    user-select: none;
 }
 
 .form__legal-text a {

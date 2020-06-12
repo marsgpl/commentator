@@ -1,11 +1,15 @@
 class ModalPopup {
-    constructor(cssSelector, onWindowResize = null) {
+    constructor(cssSelector, onShowModal = null) {
         /** @type {number} */ this.x;
         /** @type {number} */ this.y;
         /** @type {Object} */ this._titleEl;
         /** @type {Object} */ this._bodyEl;
         /** @type {Object} */ this._buttonsEl;
         /** @type {number} */ this.myZ;
+        /** @type {number} */ this.minContentHeight;
+        /** @type {Function} */ this.onWindowResize;
+
+        this.onShowModal = onShowModal;
 
         this.shown = false;
         this._el = $(cssSelector);
@@ -18,13 +22,9 @@ class ModalPopup {
         bind(this._el, 'click', this.hideByParanjaClick.bind(this));
         bind(this._el, 'mousedown touchstart', this.rememberClickCoordinates.bind(this));
 
-        if (onWindowResize) {
-            this.onWindowResize = onWindowResize;
+        if (this._el.classList.contains(CSS_CLASS_MODAL_POPUP_WITH_FORM.substr(1))) {
+            this.onWindowResize = this.onWindowResizeForModalWithForm;
         }
-    }
-
-    setContentMinHeight(newValue) {
-        this._contentEl.style.minHeight = newValue;
     }
 
     rememberClickCoordinates(event) {
@@ -35,6 +35,7 @@ class ModalPopup {
     show() {
         if (this.shown) return;
         this.shown = true;
+
         ModalPopup.shownRightNowChange(+1);
 
         this.myZ = ++ModalPopup.lastZ;
@@ -48,14 +49,17 @@ class ModalPopup {
         bind(window, 'keydown', this.hideByKey);
 
         if (this.onWindowResize) {
-            this.onWindowResize();
             bind(window, 'resize', this.onWindowResize);
+            this.onWindowResize();
         }
+
+        this.onShowModal && this.onShowModal();
     }
 
     hide() {
         if (!this.shown) return;
         this.shown = false;
+
         ModalPopup.shownRightNowChange(-1);
 
         setTimeout(() => hide(this._el), 200);
@@ -139,6 +143,24 @@ class ModalPopup {
 
     showButtons() {
         show(this.getButtonsEl());
+    }
+
+    onWindowResizeForModalWithForm() {
+        if (window.innerWidth <= 509) { // modal-popup@media.css
+            const newValue = window.innerHeight;
+
+            if (this.minContentHeight !== newValue) {
+                this.minContentHeight = newValue;
+                this.setContentMinHeight(newValue + 'px');
+            }
+        } else if (this.minContentHeight) {
+            this.minContentHeight = 0;
+            this.setContentMinHeight('initial');
+        }
+    }
+
+    setContentMinHeight(newValue) {
+        this._contentEl.style.minHeight = newValue;
     }
 }
 

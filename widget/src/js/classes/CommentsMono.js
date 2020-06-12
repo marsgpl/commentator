@@ -1,6 +1,6 @@
 class CommentsMono extends Comments {
-    constructor(dialog, statusRow) {
-        super(dialog, statusRow);
+    constructor(dialog, statusRow, replyToCommentModal) {
+        super(dialog, statusRow, replyToCommentModal);
 
         /** @type {string} */ this.newestId;
         /** @type {string} */ this.oldestId;

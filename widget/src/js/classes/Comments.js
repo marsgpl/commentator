@@ -3,7 +3,7 @@ class Comments {
      * @param {Dialog} dialog
      * @param {StatusRow} statusRow
      */
-    constructor(dialog, statusRow) {
+    constructor(dialog, statusRow, replyToCommentModal) {
         /** @type {number} */ this.dateRefresherInterval;
         /** @type {number} */ this.commentRefresherInterval;
 
@@ -25,6 +25,7 @@ class Comments {
         this.isColumnVisible = false;
         this.dialog = dialog;
         this.statusRow = statusRow;
+        this.replyToCommentModal = replyToCommentModal;
 
         this.canPaginate = true;
         this.paginationInProcess = false;
@@ -40,7 +41,7 @@ class Comments {
         this.startCommentRefresher();
     }
 
-    loadLikesForVisibleComments() {
+    updateVisibleComments() {
         if (!this.commentsEverLoaded) return;
 
         const visibleCommentsIds = [];
@@ -66,7 +67,27 @@ class Comments {
             }
         });
 
-        this.loadLikesForCommentsIds(visibleCommentsIds);
+        this.updateVisibleCommentsApiCall(visibleCommentsIds);
+    }
+
+    updateVisibleCommentsApiCall(visibleCommentsIds) {
+        if (visibleCommentsIds.length === 0) return;
+
+        ajax(API_HTTP_METHOD_GET, API_BASE_URL + API_METHOD_GET_UPDATES_FOR_COMMENTS_IDS, {
+            [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
+            [API_PARAM_LANG]: API_LANG,
+            [API_PARAM_COMMENTS_IDS]: visibleCommentsIds.join(','),
+        }, json => {
+            if (apiRequestFailed(json)) return;
+
+            const result = json[API_PARAM_UPDATES_FOR_COMMENTS];
+
+            Object.keys(result).forEach(commentId => {
+                const newLikesCountValue = result[commentId];
+                const comment = this.shownComments[commentId];
+                this.setLikesCountForComment(comment, newLikesCountValue);
+            });
+        });
     }
 
     onScroll() {
@@ -93,7 +114,7 @@ class Comments {
         this.canAutoRefresh = document.visibilityState === 'visible';
 
         if (this.canAutoRefresh && this.isColumnVisible) {
-            this.loadLikesForVisibleComments();
+            this.updateVisibleComments();
             this.loadComments();
             this.refreshDates();
         }
@@ -112,7 +133,7 @@ class Comments {
 
     onBecomeVisible() {
         this.recalcColsHeights();
-        this.loadLikesForVisibleComments();
+        this.updateVisibleComments();
         this.loadComments();
         this.refreshDates();
     }
@@ -129,7 +150,7 @@ class Comments {
         this.commentRefresherInterval = setInterval(() => {
             if (!this.canAutoRefresh) return;
             if (!this.isColumnVisible) return;
-            this.loadLikesForVisibleComments();
+            this.updateVisibleComments();
             this.loadComments();
         }, 10000);
     }
@@ -139,26 +160,6 @@ class Comments {
             CSS_CLASS_LOADER,
             CSS_CLASS_COLUMNS_PAGINATION_LOADER,
         ]);
-    }
-
-    loadLikesForCommentsIds(visibleCommentsIds) {
-        if (visibleCommentsIds.length === 0) return;
-
-        ajax(API_HTTP_METHOD_GET, API_BASE_URL + API_METHOD_GET_LIKES_FOR_COMMENTS_IDS, {
-            [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
-            [API_PARAM_LANG]: API_LANG,
-            [API_PARAM_COMMENTS_IDS]: visibleCommentsIds.join(','),
-        }, json => {
-            if (apiRequestFailed(json)) return;
-
-            const result = json[API_PARAM_LIKES_FOR_COMMENTS];
-
-            Object.keys(result).forEach(commentId => {
-                const newLikesCountValue = result[commentId];
-                const comment = this.shownComments[commentId];
-                this.setLikesCountForComment(comment, newLikesCountValue);
-            });
-        });
     }
 
     isCommentLikedByMe(comment) {
@@ -305,6 +306,12 @@ class Comments {
                 );
             });
 
+            bind(reply, 'click', () => {
+                this.replyToCommentModal.setTargetComment(comment);
+                this.replyToCommentModal.modal.show();
+            });
+
+
             bind(like, 'click', () => {
                 this.likeComment(comment);
             });
@@ -321,6 +328,10 @@ class Comments {
         });
     }
 
+    getCommentUrl(comment) {
+        return `#comment:${comment[HTML_NODE_FIELD_COMMENT_ID]}`;
+    }
+
     foldText(comment) {
         const textWrap = $(CSS_CLASS_COMMENT_TEXT_WRAP, comment);
         const text = $(CSS_CLASS_COMMENT_TEXT, comment);
@@ -333,17 +344,28 @@ class Comments {
 
         text.classList.add(CSS_CLASS_COMMENT_TEXT_BIG.substr(1));
 
-        const showFull = createNode('a', CSS_CLASS_COMMENT_SHOW_FULL);
+        const showFull = createNode('div', [
+            CSS_CLASS_COMMENT_SHOW_FULL,
+            CSS_CLASS_COMMENT_TEXT_ACTION,
+        ]);
 
-        showFull.href = `#comment:${comment[HTML_NODE_FIELD_COMMENT_ID]}`;
         showFull.innerText = '#lang#show_full_comment#';
+
+        const looseClassName = CSS_CLASS_COMMENT_TEXT_WRAP_LOOSE.substr(1);
+        const textWrapClassList = textWrap.classList;
 
         bind(showFull, 'click', event => {
             event.preventDefault();
 
-            remove(showFull);
+            const mustBeShown = showFull[HTML_NODE_FIELD_SHOWN] = !showFull[HTML_NODE_FIELD_SHOWN];
 
-            textWrap.classList.add(CSS_CLASS_COMMENT_TEXT_WRAP_LOOSE.substr(1));
+            if (!mustBeShown) {
+                textWrapClassList.remove(looseClassName);
+                showFull.innerText = '#lang#show_full_comment#';
+            } else {
+                textWrapClassList.add(looseClassName);
+                showFull.innerText = '#lang#hide_full_comment#';
+            }
         });
 
         comment.insertBefore(showFull, $(CSS_CLASS_COMMENT_ACTION_BAR, comment));

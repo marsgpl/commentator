@@ -1,6 +1,6 @@
 class CommentsDual extends Comments {
-    constructor(dialog, statusRow) {
-        super(dialog, statusRow);
+    constructor(dialog, statusRow, replyToCommentModal) {
+        super(dialog, statusRow, replyToCommentModal);
 
         /** @type {string} */ this.newestPositiveId;
         /** @type {string} */ this.newestNegativeId;

@@ -15,6 +15,7 @@
 }
 
 .input_textarea {
+    display: block;
     resize: vertical;
     min-height: 69px;
     max-height: 381px;
