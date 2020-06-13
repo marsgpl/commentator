@@ -2,13 +2,19 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 import '../constants.dart';
 import '../entities/Comment.dart';
+import '../renamer.dart';
 
 class Comments {
     Db mongo;
+
     DbCollection collection;
     DbCollection likesCollection;
+    DbCollection repliesCollection;
+
     String collectionName;
     String likesCollectionName;
+    String repliesCollectionName;
+
     String commentatorId;
     String lang;
 
@@ -23,6 +29,7 @@ class Comments {
     void initCollection() {
         collectionName = '${commentatorId}_${lang}_comments';
         likesCollectionName = '${collectionName}_likes';
+        repliesCollectionName = '${collectionName}_replies';
 
         if (AVAILABLE_COLLECTIONS[collectionName] == null) {
             return;
@@ -30,6 +37,39 @@ class Comments {
 
         collection = mongo.collection(collectionName);
         likesCollection = mongo.collection(likesCollectionName);
+        repliesCollection = mongo.collection(repliesCollectionName);
+    }
+
+    Future<List<Comment>> getReplies({
+        ObjectId commentId,
+        int limit = 50,
+        String oldestReplyId,
+        String newestReplyId,
+        String appUserToken,
+    }) async {
+        final selector = where.eq('commentId', commentId);
+
+        if (newestReplyId != null && newestReplyId.length > 0) {
+            selector.gt('_id', ObjectId.parse(newestReplyId));
+        } else if (oldestReplyId != null && oldestReplyId.length > 0) {
+            selector.lt('_id', ObjectId.parse(oldestReplyId));
+        }
+
+        selector
+            .sortBy('_id', descending: true)
+            .limit(limit);
+
+        final replies = await repliesCollection
+            .find(selector)
+            .map((row) {
+                final reply = Comment.fromMongo(row);
+                return reply;
+            })
+            .toList();
+
+        // TODO: likes by appUserToken (liked by me + likes count)
+
+        return replies;
     }
 
     Future<List<Comment>> getList({
@@ -57,7 +97,7 @@ class Comments {
 
         Map<ObjectId, Comment> commentsById = {};
 
-        final List<Comment> result = await collection
+        final result = await collection
             .find(selector)
             .map((row) {
                 final comment = Comment.fromMongo(row);
@@ -82,19 +122,32 @@ class Comments {
         return result;
     }
 
-    Future<Map<String, int>> getUpdatesForIds({
+    Future<bool> commentExistById(ObjectId commentId) async {
+        final selector = where
+            .eq('_id', commentId)
+            .fields(['_id']);
+
+        final row = await collection.findOne(selector);
+
+        return row != null;
+    }
+
+    Future<Map<String, Map<String, dynamic>>> getUpdatesForIds({
         List<ObjectId> ids,
         int limit = 50,
     }) async {
-        Map<String, int> result = {};
+        Map<String, Map<String, dynamic>> result = {};
 
         final selector = where
             .oneFrom('_id', ids)
-            .fields(['likes'])
+            .fields(['likes', 'replies'])
             .limit(limit);
 
         await collection.find(selector).forEach((row) {
-            result[row['_id'].toHexString()] = row['likes'] ?? 0;
+            result[row['_id'].toHexString()] = {
+                renamer('likes'): row['likes'] ?? 0,
+                renamer('replies'): row['replies'] ?? 0,
+            };
         });
 
         return result;
@@ -103,6 +156,7 @@ class Comments {
     Future<void> like({
         ObjectId commentId,
         int like,
+
         String ip,
         String userAgent,
         String cfUid,
@@ -115,13 +169,18 @@ class Comments {
             .eq('appUserToken', appUserToken);
 
         if (like == 1) {
-            final result = await likesCollection.update(selector, {
+            final likeRow = {
                 'commentId': commentId,
                 'ip': ip,
                 'userAgent': userAgent,
                 'cfUid': cfUid,
                 'appUserToken': appUserToken,
-            }, upsert: true);
+            };
+
+            final result = await likesCollection.update(
+                selector,
+                likeRow,
+                upsert: true);
 
             needIncrement = !result['updatedExisting'];
         } else {
@@ -137,6 +196,40 @@ class Comments {
                 },
             });
         }
+    }
+
+    Future<Map<String, dynamic>> replyTo({
+        ObjectId commentId,
+        String text,
+        String name,
+
+        String ip,
+        String userAgent,
+        String cfUid,
+        String appUserToken,
+    }) async {
+        final replyRow = {
+            'commentId': commentId,
+            'text': text,
+            'name': name,
+
+            'ip': ip,
+            'userAgent': userAgent,
+            'cfUid': cfUid,
+            'appUserToken': appUserToken,
+        };
+
+        final result = await repliesCollection.insert(replyRow);
+
+        if (result != null && result['ok'] == 1) {
+            await collection.update(where.eq('_id', commentId), {
+                '\$inc': {
+                    'replies': 1,
+                },
+            });
+        }
+
+        return result;
     }
 
     Future<int> totalCount({

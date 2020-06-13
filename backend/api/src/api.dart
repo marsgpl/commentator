@@ -9,6 +9,8 @@ import './errorHandlers/internalError.dart';
 import './methods/getCommentsDual.dart';
 import './methods/getCommentsMono.dart';
 import './methods/createComment.dart';
+import './methods/replyToComment.dart';
+import './methods/getCommentReplies.dart';
 import './methods/likeComment.dart';
 import './methods/getUpdatesForCommentsIds.dart';
 import './renamer.dart';
@@ -60,6 +62,13 @@ Future<void> main() async {
                     await getUpdatesForCommentsIds(reqInfo, mongo) :
                     methodNotAllowedForRoute(request);
             } else if (
+                uri.path == '/api/getCommentReplies' ||
+                uri.path == renamer('/api/getCommentReplies')
+            ) {
+                answer = (method == 'GET') ?
+                    await getCommentReplies(reqInfo, mongo) :
+                    methodNotAllowedForRoute(request);
+            } else if (
                 uri.path == '/api/likeComment' ||
                 uri.path == renamer('/api/likeComment')
             ) {
@@ -72,6 +81,13 @@ Future<void> main() async {
             ) {
                 answer = (method == 'POST') ?
                     await createComment(reqInfo, mongo) :
+                    methodNotAllowedForRoute(request);
+            } else if (
+                uri.path == '/api/replyToComment' ||
+                uri.path == renamer('/api/replyToComment')
+            ) {
+                answer = (method == 'POST') ?
+                    await replyToComment(reqInfo, mongo) :
                     methodNotAllowedForRoute(request);
             } else {
                 answer = routeNotFound(request);

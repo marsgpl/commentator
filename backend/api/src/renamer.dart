@@ -8,7 +8,7 @@ const DICT = {
     'name': 'f',
     'comments': 'g',
     'id': 'h',
-    'createdAt': 'i',
+    // i
     'ok': 'j',
     'error': 'k',
     'code': 'l',
@@ -29,6 +29,9 @@ const DICT = {
     'like': 'A',
     'appUserToken': 'B',
     'likedByMe': 'C',
+    'replies': 'D',
+    'oldestReplyId': 'E',
+    'newestReplyId': 'F',
 
     '/api/createComment': '/api/-',
     '/api/getCommentsDual': '/api/_',
@@ -36,6 +39,7 @@ const DICT = {
     '/api/getUpdatesForCommentsIds': '/api/b',
     '/api/likeComment': '/api/c',
     '/api/replyToComment': '/api/d',
+    '/api/getCommentReplies': '/api/e',
 };
 
 String renamer(String name) {

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import '../RequestInfo.dart';
@@ -11,22 +10,20 @@ import '../service/Comments.dart';
 // commentatorId=pandora
 // lang=ru
 // commentId=xxx
-// like=1 (1 - put like, 0 - remove like)
-Future<Map<String, dynamic>> likeComment(
+// oldestReplyId=xxx
+// newestReplyId=xxx
+Future<Map<String, dynamic>> getCommentReplies(
     RequestInfo reqInfo,
     Db mongo,
 ) async {
-    await reqInfo.body;
     final getParam = reqInfo.getParam;
 
     final appUserToken = getParam('appUserToken');
     final commentatorId = getParam('commentatorId');
     final lang = getParam('lang');
     final commentId = ObjectId.parse(getParam('commentId'));
-    int like = max(0, min(1, int.parse(getParam('like'))));
-    final ip = reqInfo.ip;
-    final userAgent = reqInfo.userAgent;
-    final cfUid = reqInfo.cfUid;
+    final oldestReplyId = getParam('oldestReplyId');
+    final newestReplyId = getParam('newestReplyId');
 
     if (appUserToken.length != API_USER_TOKEN_LENGTH) {
         return invalidParamsFromClient('token');
@@ -42,17 +39,21 @@ Future<Map<String, dynamic>> likeComment(
         return invalidParamsFromClient('commentatorId + lang does not exist');
     }
 
-    await comments.like(
-        commentId: commentId,
-        like: like,
+    final commentExist = await comments.commentExistById(commentId);
 
-        ip: ip,
-        userAgent: userAgent,
-        cfUid: cfUid,
+    if (!commentExist) {
+        return invalidParamsFromClient('comment does not exist');
+    }
+
+    final replies = await comments.getReplies(
+        commentId: commentId,
+        limit: REPLIES_LIMIT_PER_RESPONSE,
+        oldestReplyId: oldestReplyId,
+        newestReplyId: newestReplyId,
         appUserToken: appUserToken,
     );
 
     return {
-        renamer('ok'): 1,
+        renamer('replies'): replies,
     };
 }

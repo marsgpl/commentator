@@ -57,7 +57,6 @@
     db.pandora_ru_comments.remove({})
 
     for (let i=0; i<200; i++) db.pandora_ru_comments.insert({
-        "createdAt" : new Date,
         "text" : Math.random()+'',
         "side" : "p",
         "name" : Math.random()+'',
@@ -68,7 +67,6 @@
     })
 
     for (let i=0; i<10; i++) db.pandora_ru_comments.insert({
-        "createdAt" : new Date,
         "text" : Math.random()+'',
         "side" : "n",
         "name" : Math.random()+'',
@@ -79,13 +77,20 @@
     })
 
     db.abortion_ru_comments.drop()
-    db.pandora_ru_comments.drop()
-    db.deathpen_ru_comments.drop()
-    db.deppherd_ru_comments.drop()
     db.abortion_ru_comments_likes.drop()
+    db.abortion_ru_comments_replies.drop()
+
+    db.pandora_ru_comments.drop()
     db.pandora_ru_comments_likes.drop()
+    db.pandora_ru_comments_replies.drop()
+
+    db.deathpen_ru_comments.drop()
     db.deathpen_ru_comments_likes.drop()
+    db.deathpen_ru_comments_replies.drop()
+
+    db.deppherd_ru_comments.drop()
     db.deppherd_ru_comments_likes.drop()
+    db.deppherd_ru_comments_replies.drop()
 
 ## DB indexes
 
@@ -95,21 +100,29 @@
     db.abortion_ru_comments.ensureIndex({ "appUserToken": 1 });
     db.abortion_ru_comments.ensureIndex({ "text": "text" });
     db.abortion_ru_comments_likes.ensureIndex({ "commentId": 1, "appUserToken": 1 }, { "unique": 1 });
+    db.abortion_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
+    db.abortion_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
 
     db.pandora_ru_comments.ensureIndex({ "side": 1, "_id": 1 });
     db.pandora_ru_comments.ensureIndex({ "appUserToken": 1 });
     db.pandora_ru_comments.ensureIndex({ "text": "text" });
     db.pandora_ru_comments_likes.ensureIndex({ "commentId": 1, "appUserToken": 1 }, { "unique": 1 });
+    db.pandora_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
+    db.pandora_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
 
     db.deathpen_ru_comments.ensureIndex({ "side": 1, "_id": 1 });
     db.deathpen_ru_comments.ensureIndex({ "appUserToken": 1 });
     db.deathpen_ru_comments.ensureIndex({ "text": "text" });
     db.deathpen_ru_comments_likes.ensureIndex({ "commentId": 1, "appUserToken": 1 }, { "unique": 1 });
+    db.deathpen_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
+    db.deathpen_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
 
     db.deppherd_ru_comments.ensureIndex({ "side": 1, "_id": 1 });
     db.deppherd_ru_comments.ensureIndex({ "appUserToken": 1 });
     db.deppherd_ru_comments.ensureIndex({ "text": "text" });
     db.deppherd_ru_comments_likes.ensureIndex({ "commentId": 1, "appUserToken": 1 }, { "unique": 1 });
+    db.deppherd_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
+    db.deppherd_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
 
 ## Move DB comments to local
 

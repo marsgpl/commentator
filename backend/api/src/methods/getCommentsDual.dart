@@ -30,7 +30,7 @@ Future<Map<String, dynamic>> getCommentsDual(
     final newestNegativeId = getParam('newestNegativeId');
     final oldestNegativeId = getParam('oldestNegativeId');
 
-    if (appUserToken.length != 36) {
+    if (appUserToken.length != API_USER_TOKEN_LENGTH) {
         return invalidParamsFromClient('token');
     }
 

@@ -2,7 +2,6 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 import '../RequestInfo.dart';
 import '../constants.dart';
-import '../entities/Comment.dart';
 import '../errorHandlers/invalidParamsFromClient.dart';
 import '../helpers/normalizeName.dart';
 import '../helpers/normalizeText.dart';
@@ -12,10 +11,10 @@ import '../service/Comments.dart';
 // appUserToken=zzz
 // commentatorId=pandora
 // lang=ru
+// commentId=xxx
 // text=xyu
-// side=p
 // name=vasya
-Future<Map<String, dynamic>> createComment(
+Future<Map<String, dynamic>> replyToComment(
     RequestInfo reqInfo,
     Db mongo,
 ) async {
@@ -25,7 +24,7 @@ Future<Map<String, dynamic>> createComment(
     final appUserToken = getParam('appUserToken');
     final commentatorId = getParam('commentatorId');
     final lang = getParam('lang');
-    final side = getParam('side');
+    final commentId = ObjectId.parse(getParam('commentId'));
     final text = normalizeText(getParam('text'));
     final name = normalizeName(getParam('name'));
     final ip = reqInfo.ip;
@@ -40,10 +39,6 @@ Future<Map<String, dynamic>> createComment(
         return invalidParamsFromClient('min text length is 2');
     }
 
-    if (side != COMMENT_SIDE_POSITIVE && side != COMMENT_SIDE_NEGATIVE) {
-        return invalidParamsFromClient('unknown side');
-    }
-
     final comments = Comments(
         mongo: mongo,
         commentatorId: commentatorId,
@@ -54,9 +49,15 @@ Future<Map<String, dynamic>> createComment(
         return invalidParamsFromClient('commentatorId + lang does not exist');
     }
 
-    final comment = Comment(
+    final commentExist = await comments.commentExistById(commentId);
+
+    if (!commentExist) {
+        return invalidParamsFromClient('comment does not exist');
+    }
+
+    final result = await comments.replyTo(
+        commentId: commentId,
         text: text,
-        side: side,
         name: name,
 
         ip: ip,
@@ -65,10 +66,8 @@ Future<Map<String, dynamic>> createComment(
         appUserToken: appUserToken,
     );
 
-    final result = await comments.collection.insert(comment.toMongo());
-
     if (result == null || result['ok'] != 1 || result['err'] != null) {
-        throw Exception('MongoDb collection "${comments.collectionName}" insert error: ${result}');
+        throw Exception('MongoDb collection "${comments.repliesCollectionName}" insert error: ${result}');
     }
 
     return {

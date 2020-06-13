@@ -5,7 +5,6 @@ import '../renamer.dart';
 class Comment implements Comparable<Comment> {
     Comment({
         String id,
-        DateTime createdAt,
         this.text = '',
         this.side = '',
         this.name = '',
@@ -15,12 +14,11 @@ class Comment implements Comparable<Comment> {
         this.appUserToken = '',
         this.likes = 0,
         this.likedByMe = false,
+        this.replies = 0,
     }) :
-        id = id ?? Uuid().v4(),
-        createdAt = createdAt ?? DateTime.now();
+        id = id ?? Uuid().v4();
 
     final String id;
-    final DateTime createdAt;
     String text;
     String side;
     String name;
@@ -30,18 +28,18 @@ class Comment implements Comparable<Comment> {
     String appUserToken;
     int likes;
     bool likedByMe;
+    int replies;
 
     @override
     String toString() => '*Comment(id: $id)';
 
     @override
     int compareTo(Comment other) {
-        return createdAt.compareTo(other.createdAt);
+        return id.compareTo(other.id);
     }
 
     Comment.fromMongo(Map<String, dynamic> mongoData) :
         id = mongoData['_id'].toHexString() ?? Uuid().v4(),
-        createdAt = mongoData['createdAt'] ?? DateTime.now(),
         text = mongoData['text'] ?? '',
         side = mongoData['side'] ?? '',
         name = mongoData['name'] ?? '',
@@ -49,11 +47,11 @@ class Comment implements Comparable<Comment> {
         userAgent = mongoData['userAgent'] ?? '',
         cfUid = mongoData['cfUid'] ?? '',
         appUserToken = mongoData['appUserToken'] ?? '',
-        likes = mongoData['likes'] ?? 0,
-        likedByMe = false;
+        likes = (mongoData['likes'] ?? 0).round(),
+        likedByMe = false,
+        replies = (mongoData['replies'] ?? 0).round();
 
     Map<String, dynamic> toMongo() => {
-        'createdAt': createdAt,
         'text': text,
         'side': side,
         'name': name,
@@ -62,15 +60,18 @@ class Comment implements Comparable<Comment> {
         'cfUid': cfUid,
         'appUserToken': appUserToken,
         'likes': likes,
+        'replies': replies,
     };
 
     Map<String, dynamic> toJson() {
         Map<String, dynamic> json = {
             renamer('id'): id,
-            renamer('createdAt'): createdAt.toIso8601String(),
             renamer('text'): text,
-            renamer('side'): side,
         };
+
+        if (side.length > 0) {
+            json[renamer('side')] = side;
+        }
 
         if (name.length > 0) {
             json[renamer('name')] = name;
@@ -82,6 +83,10 @@ class Comment implements Comparable<Comment> {
 
         if (likedByMe) {
             json[renamer('likedByMe')] = 1;
+        }
+
+        if (replies > 0) {
+            json[renamer('replies')] = replies;
         }
 
         return json;
