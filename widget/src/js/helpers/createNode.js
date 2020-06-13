@@ -1,4 +1,4 @@
-const createNode = function(tagName, classNames) {
+const createNode = function(tagName, classNames = null) {
     const node = document.createElement(tagName);
 
     if (classNames) {

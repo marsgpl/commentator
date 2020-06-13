@@ -57,7 +57,7 @@ class Dialog {
                 this.modal.hide();
             });
 
-            push(buttonsEl, button);
+            push(button, buttonsEl);
         });
     }
 }

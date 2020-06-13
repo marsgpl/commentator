@@ -83,9 +83,11 @@ class Comments {
             const result = json[API_PARAM_UPDATES_FOR_COMMENTS];
 
             Object.keys(result).forEach(commentId => {
-                const newLikesCountValue = result[commentId];
                 const comment = this.shownComments[commentId];
-                this.setLikesCountForComment(comment, newLikesCountValue);
+                const newCommentValues = result[commentId];
+
+                this.setLikesCountForComment(comment, newCommentValues[API_PARAM_LIKES]);
+                this.refreshRepliesForComment(comment, newCommentValues[API_PARAM_REPLIES]);
             });
         });
     }
@@ -163,19 +165,19 @@ class Comments {
     }
 
     isCommentLikedByMe(comment) {
-        const heart = $(CSS_CLASS_HEART, comment);
-        return heart.classList.contains(CSS_CLASS_HEART_ACTIVE.substr(1));
+        const heart = $(CSS_CLASS_ICON_HEART, comment);
+        return heart.classList.contains(CSS_CLASS_ICON_HEART_ACTIVE.substr(1));
     }
 
     likeComment(comment) {
         const isLiked = this.isCommentLikedByMe(comment);
 
-        const heart = $(CSS_CLASS_HEART, comment);
+        const heart = $(CSS_CLASS_ICON_HEART, comment);
         const likesCount = $(CSS_CLASS_COMMENT_LIKES_COUNT, comment);
 
         const delta = isLiked ? -1 : 1;
 
-        const activeClassName = CSS_CLASS_HEART_ACTIVE.substr(1);
+        const activeClassName = CSS_CLASS_ICON_HEART_ACTIVE.substr(1);
 
         if (isLiked) {
             heart.classList.remove(activeClassName);
@@ -277,7 +279,7 @@ class Comments {
             if (this.shownComments[id]) return;
 
             const comment = dup($(CSS_CLASS_COMMENT, CSS_CLASS_TEMPLATES));
-            const heart = dup($(CSS_CLASS_HEART, CSS_CLASS_TEMPLATES));
+            const heart = dup($(CSS_CLASS_ICON_HEART, CSS_CLASS_TEMPLATES));
             const author = $(CSS_CLASS_COMMENT_AUTHOR, comment);
             const text = $(CSS_CLASS_COMMENT_TEXT, comment);
             const date = $(CSS_CLASS_COMMENT_DATE, comment);
@@ -287,16 +289,20 @@ class Comments {
 
             this.shownComments[id] = comment;
 
+            const commentCreationTimeStamp = commentFromApi[API_PARAM_ID].substr(0, 8);
+            const commentCreationDate = new Date(parseInt(commentCreationTimeStamp, 16) * 1000);
+
             comment[HTML_NODE_FIELD_COMMENT_ID] = id;
-            date[HTML_NODE_FIELD_DATE] = new Date(commentFromApi[API_PARAM_CREATED_AT]);
+            date[HTML_NODE_FIELD_DATE] = commentCreationDate;
             author.innerText = commentFromApi[API_PARAM_NAME] || '#lang#comment_anonymous_name#';
             text.innerText = commentFromApi[API_PARAM_TEXT];
             likesCount.innerText = commentFromApi[API_PARAM_LIKES] || '';
 
             if (commentFromApi[API_PARAM_LIKED_BY_ME]) {
-                heart.classList.add(CSS_CLASS_HEART_ACTIVE.substr(1));
+                heart.classList.add(CSS_CLASS_ICON_HEART_ACTIVE.substr(1));
             }
 
+            this.refreshRepliesForComment(comment, commentFromApi[API_PARAM_REPLIES]);
             this.refreshDate(date);
 
             bind(date, 'click', () => {
@@ -311,7 +317,6 @@ class Comments {
                 this.replyToCommentModal.modal.show();
             });
 
-
             bind(like, 'click', () => {
                 this.likeComment(comment);
             });
@@ -321,8 +326,9 @@ class Comments {
             like.insertBefore(heart, likesCount);
 
             (isPagination ? push : unshift)(
+                this.wrapComment(comment, isPositive),
                 this.getParentContainerForComment(isPositive),
-                this.wrapComment(comment, isPositive));
+            );
 
             this.foldText(comment);
         });
@@ -394,6 +400,156 @@ class Comments {
         }
 
         node.innerText = value;
+    }
+
+    refreshRepliesForComment(comment, repliesCount) {
+        let repliesRow = $(CSS_CLASS_COMMENT_REPLIES, comment);
+        let repliesContainer = $(CSS_CLASS_COMMENT_REPLIES_CONTAINER, comment);
+
+        if (!repliesCount) {
+            if (repliesRow) {
+                remove(repliesRow);
+                remove(repliesContainer);
+                this.recalcColsHeights();
+            }
+
+            return;
+        }
+
+        if (repliesRow) {
+            repliesRow[HTML_NODE_FIELD_REPLIES_COUNT] = repliesCount;
+        } else {
+            repliesRow = createNode('div', [
+                CSS_CLASS_COMMENT_REPLIES,
+            ]);
+
+            repliesRow[HTML_NODE_FIELD_REPLIES_COUNT] = repliesCount;
+
+            repliesContainer = createNode('div', [
+                CSS_CLASS_COMMENT_REPLIES_CONTAINER,
+            ]);
+
+            const repliesText = createNode('div', [
+                CSS_CLASS_COMMENT_REPLIES_TEXT,
+            ]);
+
+            const unfold = dup(CSS_CLASS_ICON_UNFOLD);
+
+            push(unfold, repliesRow);
+            push(repliesText, repliesRow);
+            push(repliesRow, comment);
+            push(repliesContainer, comment);
+
+            bind(repliesRow, 'click',
+                this.toggleRepliesRow.bind(this, comment, repliesRow, repliesContainer));
+        }
+
+        this.refreshRepliesRow(comment, repliesRow, repliesContainer);
+    }
+
+    toggleRepliesRow(comment, repliesRow, repliesContainer) {
+        const repliesRowClassList = repliesRow.classList;
+        const unfoldedClassName = CSS_CLASS_COMMENT_REPLIES_UNFOLDED.substr(1);
+
+        if (repliesRowClassList.contains(unfoldedClassName)) {
+            repliesRowClassList.remove(unfoldedClassName);
+        } else {
+            repliesRowClassList.add(unfoldedClassName);
+        }
+
+        this.refreshRepliesRow(comment, repliesRow, repliesContainer);
+    }
+
+    refreshRepliesRow(comment, repliesRow, repliesContainer) {
+        const unfoldedClassName = CSS_CLASS_COMMENT_REPLIES_UNFOLDED.substr(1);
+        const repliesRowClassList = repliesRow.classList;
+
+        const repliesText = $(CSS_CLASS_COMMENT_REPLIES_TEXT, repliesRow);
+
+        if (repliesRowClassList.contains(unfoldedClassName)) {
+            repliesText.innerText = '#lang#fold_replies#';
+
+            this.loadRepliesForComment(comment, repliesContainer);
+        } else {
+            repliesText.innerText = icaseLang(
+                repliesRow[HTML_NODE_FIELD_REPLIES_COUNT],
+                '#lang#unfold_x_replies__0#',
+                '#lang#unfold_x_replies__1#',
+                '#lang#unfold_x_replies__2#',
+            );
+        }
+
+        this.recalcColsHeights();
+    }
+
+    // TODO: add loader if first call
+    // TODO: popup error if error on first call
+    loadRepliesForComment(comment, repliesContainer, isPagination = false) {
+        const params = {
+            [API_PARAM_COMMENTATOR_ID]: API_COMMENTATOR_ID,
+            [API_PARAM_LANG]: API_LANG,
+            [API_PARAM_COMMENT_ID]: comment[HTML_NODE_FIELD_COMMENT_ID],
+            [API_PARAM_APP_USER_TOKEN]: APP_USER_TOKEN,
+        };
+
+        const oldestReplyId = repliesContainer[HTML_NODE_FIELD_OLDEST_REPLY_ID];
+        const newestReplyId = repliesContainer[HTML_NODE_FIELD_NEWEST_REPLY_ID];
+
+        if (isPagination) {
+            if (oldestReplyId) {
+                params[API_PARAM_OLDEST_REPLY_ID] = oldestReplyId;
+            }
+        } else {
+            if (newestReplyId) {
+                params[API_PARAM_NEWEST_REPLY_ID] = newestReplyId;
+            }
+        }
+
+        ajax(API_HTTP_METHOD_GET, API_BASE_URL + API_METHOD_GET_COMMENT_REPLIES, params, json => {
+            if (apiRequestFailed(json)) return;
+
+            const replies = json[API_PARAM_REPLIES];
+
+            if (!replies.length) return;
+
+            replies.reverse().forEach(reply =>
+                this.pushReplyToComment(comment, repliesContainer, reply));
+
+            this.recalcColsHeights();
+        });
+    }
+
+    pushReplyToComment(comment, repliesContainer, reply) {
+        const oldestReplyId = repliesContainer[HTML_NODE_FIELD_OLDEST_REPLY_ID];
+        const newestReplyId = repliesContainer[HTML_NODE_FIELD_NEWEST_REPLY_ID];
+        const replyId = reply[API_PARAM_ID];
+
+        if (!oldestReplyId || replyId < oldestReplyId) {
+            repliesContainer[HTML_NODE_FIELD_OLDEST_REPLY_ID] = replyId;
+        }
+
+        if (!newestReplyId || replyId > newestReplyId) {
+            repliesContainer[HTML_NODE_FIELD_NEWEST_REPLY_ID] = replyId;
+        }
+
+        const replyNode = createNode('div', [
+            CSS_CLASS_COMMENT_REPLY_ROW,
+        ]);
+
+        const replyAuthorNameNode = createNode('span', [
+            CSS_CLASS_COMMENT_REPLY_ROW_AUTHOR_NAME,
+        ]);
+
+        const replyTextNode = createNode('span');
+
+        replyAuthorNameNode.innerText =
+            (reply[API_PARAM_NAME] || '#lang#comment_anonymous_name#') + ':';
+
+        replyTextNode.innerText = reply[API_PARAM_TEXT];
+
+        push(replyAuthorNameNode, replyNode);
+        push(replyTextNode, replyNode);
+        unshift(replyNode, repliesContainer);
     }
 }
 

@@ -5,7 +5,6 @@
     background: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
     font-size: 16px;
-    line-height: 22px;
     min-width: 200px;
     max-width: 480px;
     overflow: hidden;
@@ -13,7 +12,6 @@
 
 .comment__header {
     display: flex;
-    font-size: 14px;
     white-space: nowrap;
 }
 
@@ -21,6 +19,14 @@
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.comment__text {
+    line-height: 22px;
+}
+
+.comment__show-full {
+    line-height: 22px;
 }
 
 .comment__text-wrap {
@@ -31,6 +37,7 @@
 }
 
 .comment__text_big {
+    min-height: 88px;
     max-height: 88px;
     display: -webkit-box;
     -webkit-line-clamp: 4;
@@ -68,7 +75,7 @@
 
 .comment__action-bar {
     display: flex;
-    margin-top: 5px;
+    margin-top: 12px;
     line-height: 24px;
 }
 
@@ -100,6 +107,7 @@
     text-transform: uppercase;
     margin-left: 8px;
     color: #333;
+    margin-top: 1px;
 }
 
 .comment__reply:hover {
@@ -107,7 +115,6 @@
 }
 
 .comment__date {
-    font-size: 14px;
     margin-left: 8px;
     cursor: help;
 }
@@ -116,4 +123,75 @@
     content: '•';
     display: inline-block;
     margin-right: 8px;
+}
+
+.comment__replies {
+    line-height: 24px;
+    display: flex;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 8px;
+    color: #065fd4;
+}
+
+.comment__replies-container {
+    display: none;
+    margin-top: 12px;
+}
+
+.comment__replies_unfolded .unfold {
+    transform: rotate(180deg);
+}
+
+.comment__replies_unfolded + .comment__replies-container {
+    display: block;
+}
+
+.comment__replies .unfold {
+    width: 24px;
+    height: 24px;
+    margin-left: -5px;
+    position: relative;
+    margin-right: 5px;
+    fill: #065fd4;
+}
+
+.comment__replies:hover {
+    color: #444;
+}
+
+.comment__replies:hover .unfold {
+    fill: #444;
+}
+
+.comment__replies:active {
+    color: #000;
+}
+
+.comment__replies:active .unfold {
+    fill: #000;
+}
+
+.comment__reply-row {
+    margin-top: 5px;
+    word-break: break-word;
+    max-height: 88px;
+    line-height: 22px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: -o-ellipsis-lastline;
+}
+
+.comment__reply-row-author-name {
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 6px;
+    max-height: 22px;
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

@@ -1,3 +1,3 @@
-const push = function(parentNode, nodeToInsert) {
+const push = function(nodeToInsert, parentNode) {
     $(parentNode).appendChild(nodeToInsert);
 };

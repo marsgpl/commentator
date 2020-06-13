@@ -65,8 +65,8 @@ class CommentsDual extends Comments {
     }
 
     addPaginationLoaders() {
-        push(this._positiveColEl, this.createPaginationLoader());
-        push(this._negativeColEl, this.createPaginationLoader());
+        push(this.createPaginationLoader(), this._positiveColEl);
+        push(this.createPaginationLoader(), this._negativeColEl);
     }
 
     removeLoaders() {

@@ -21,7 +21,7 @@ const API_PARAM_SIDE = 'e';
 const API_PARAM_NAME = 'f';
 const API_PARAM_COMMENTS = 'g';
 const API_PARAM_ID = 'h';
-const API_PARAM_CREATED_AT = 'i';
+// i
 const API_PARAM_OK = 'j';
 const API_PARAM_ERROR = 'k';
 const API_PARAM_CODE = 'l';
@@ -42,6 +42,9 @@ const API_PARAM_COMMENT_ID = 'z';
 const API_PARAM_LIKE = 'A';
 const API_PARAM_APP_USER_TOKEN = 'B';
 const API_PARAM_LIKED_BY_ME = 'C';
+const API_PARAM_REPLIES = 'D';
+const API_PARAM_OLDEST_REPLY_ID = 'E';
+const API_PARAM_NEWEST_REPLY_ID = 'F';
 
 const API_METHOD_CREATE_COMMENT = '/-';
 const API_METHOD_GET_COMMENTS_DUAL = '/_';
@@ -49,6 +52,7 @@ const API_METHOD_GET_COMMENTS_MONO = '/a';
 const API_METHOD_GET_UPDATES_FOR_COMMENTS_IDS = '/b';
 const API_METHOD_LIKE_COMMENT = '/c';
 const API_METHOD_REPLY_TO_COMMENT = '/d';
+const API_METHOD_GET_COMMENT_REPLIES = '/e';
 
 const apiExtractError = function(jsonResponse) {
     jsonResponse = jsonResponse || apiCommunicationError;

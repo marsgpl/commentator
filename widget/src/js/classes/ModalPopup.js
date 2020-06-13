@@ -23,7 +23,7 @@ class ModalPopup {
         bind(this._el, 'mousedown touchstart', this.rememberClickCoordinates.bind(this));
 
         if (this._el.classList.contains(CSS_CLASS_MODAL_POPUP_WITH_FORM.substr(1))) {
-            this.onWindowResize = this.onWindowResizeForModalWithForm;
+            this.onWindowResize = this.onWindowResizeForModalWithForm.bind(this);
         }
     }
 

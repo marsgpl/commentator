@@ -69,11 +69,14 @@ class ReplyToCommentModal {
     setTargetComment(comment) {
         this.targetComment = comment;
 
-        const title = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_TITLE);
-        const commentText = $(CSS_CLASS_COMMENT_TEXT, comment).innerText;
+        const targetCommentTextRefNode = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_ORIGINAL_COMMENT_TEXT);
+        const titleNode = $(CSS_CLASS_REPLY_TO_COMMENT_MODAL_TITLE);
 
-        title.innerText = commentText;
-        title.title = commentText;
+        const commentText = $(CSS_CLASS_COMMENT_TEXT, comment).innerText;
+        const commentAuthorName = $(CSS_CLASS_COMMENT_AUTHOR, comment).innerText;
+
+        targetCommentTextRefNode.innerText = commentText;
+        titleNode.innerText = commentAuthorName;
     }
 
     checkFormBeforeSubmit() {
@@ -119,7 +122,7 @@ class ReplyToCommentModal {
             } else {
                 this.resetForm();
                 this.modal.hide();
-                alert('TODO: update visible comments');
+                this.commentsColumns.forEach(comments => comments.updateVisibleComments());
             }
 
             then();

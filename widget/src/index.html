@@ -43,6 +43,8 @@
 
         <script src="js/helpers/$.js"></script>
         <script src="js/helpers/$$.js"></script>
+        <script src="js/helpers/icase.js"></script>
+        <script src="js/helpers/icaseLang.js"></script>
         <script src="js/helpers/ajax.js"></script>
         <script src="js/helpers/uuid.js"></script>
         <script src="js/helpers/storage.js"></script>
@@ -171,6 +173,7 @@
                 <h1 class="modal-popup__title reply-to-comment-modal__title"></h1>
                 <button class="modal-popup__close"></button>
                 <form class="form modal-popup__form reply-to-comment-modal__form">
+                    <div class="form__row reply-to-comment-modal__original-comment-text"></div>
                     <label class="form__row">
                         <span class="form__label">#lang#comment_reply_your_answer_text#</span>
                         <textarea class="input_textarea reply-to-comment-modal__input-text" maxlength="#lang#comment_reply_your_answer_text_max_length#"></textarea>
@@ -210,9 +213,13 @@
         </div>
 
         <div class="templates">
-            <svg class="heart" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 50 50">
+            <svg class="heart" viewbox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
                 <path class="heart__border" d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12a7 7 0 00-7 7c0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1a7 7 0 00-7-7c-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z" />
                 <path class="heart__fill" d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zm-8 0"/>
+            </svg>
+
+            <svg class="unfold" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10l5 5 5-5z"/>
             </svg>
 
             <div class="comment">

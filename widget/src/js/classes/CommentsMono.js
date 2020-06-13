@@ -39,7 +39,7 @@ class CommentsMono extends Comments {
     }
 
     addPaginationLoaders() {
-        push(this._colEl, this.createPaginationLoader());
+        push(this.createPaginationLoader(), this._colEl);
     }
 
     removeLoaders() {
@@ -110,7 +110,7 @@ class CommentsMono extends Comments {
                 CSS_CLASS_COMMENT_WRAP_NEGATIVE,
         ]);
 
-        push(wrap, comment);
+        push(comment, wrap);
 
         return wrap;
     }

@@ -92,3 +92,7 @@
 .form__checkbox {
     display: flex;
 }
+
+.form__col.form__checkbox {
+    cursor: pointer;
+}

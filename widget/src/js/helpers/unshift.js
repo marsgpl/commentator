@@ -1,3 +1,3 @@
-const unshift = function(parentNode, nodeToInsert) {
+const unshift = function(nodeToInsert, parentNode) {
     $(parentNode).insertBefore(nodeToInsert, parentNode.firstChild);
 };
