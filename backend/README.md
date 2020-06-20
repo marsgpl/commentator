@@ -3,29 +3,24 @@
 ## Prepare for deploy
 
     ./upload.sh
+    ssh commentator@marsgpl 'docker network create commentator'
 
 ## Deploy
 
     ./deploy.sh mongo
     ./deploy.sh api
 
+## Local
+
+    docker network create commentator
+    docker-compose up -d mongo
+    docker-compose up api
+
 ## Links
 
     <https://dart.dev/tutorials/server/httpserver>
     <https://pub.dev/packages/http_server>
     <https://pub.dev/packages/mongo_dart>
-
-## Local
-
-    docker network create commentator
-
-    docker-compose up -d mongo
-    docker-compose up api
-
-    docker-compose up -d --build --force-recreate mongo
-    docker-compose up --build --force-recreate api
-
-    docker-compose logs -f mongo
 
 ## DB
 

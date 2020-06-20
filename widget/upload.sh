@@ -3,5 +3,5 @@
 SSH_USERNAME="commentator"
 
 echo "Uploading files to prod ..."
-    rsync -rv upload/home "${SSH_USERNAME}@marsgpl":/ || exit 1
+    rsync -rv release/* root@marsgpl:/var/www/eki.one/cmnt/ || exit 1
 echo "OK"

@@ -1,12 +1,13 @@
 # Commentator widget
 
-Embeddable
+## Deploy
+
+    npm run deploy
 
 ## Local
 
     npm ci
-    time npm run build
-    time npm run deploy
+    npm run dev
 
 ## TODO
 
