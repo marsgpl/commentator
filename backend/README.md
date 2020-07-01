@@ -83,9 +83,9 @@
     db.deathpen_ru_comments_likes.drop()
     db.deathpen_ru_comments_replies.drop()
 
-    db.deppherd_ru_comments.drop()
-    db.deppherd_ru_comments_likes.drop()
-    db.deppherd_ru_comments_replies.drop()
+    db.usaprotests_ru_comments.drop()
+    db.usaprotests_ru_comments_likes.drop()
+    db.usaprotests_ru_comments_replies.drop()
 
 ## DB indexes
 
@@ -112,12 +112,12 @@
     db.deathpen_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
     db.deathpen_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
 
-    db.deppherd_ru_comments.ensureIndex({ "side": 1, "_id": 1 });
-    db.deppherd_ru_comments.ensureIndex({ "appUserToken": 1 });
-    db.deppherd_ru_comments.ensureIndex({ "text": "text" });
-    db.deppherd_ru_comments_likes.ensureIndex({ "commentId": 1, "appUserToken": 1 }, { "unique": 1 });
-    db.deppherd_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
-    db.deppherd_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
+    db.usaprotests_ru_comments.ensureIndex({ "side": 1, "_id": 1 });
+    db.usaprotests_ru_comments.ensureIndex({ "appUserToken": 1 });
+    db.usaprotests_ru_comments.ensureIndex({ "text": "text" });
+    db.usaprotests_ru_comments_likes.ensureIndex({ "commentId": 1, "appUserToken": 1 }, { "unique": 1 });
+    db.usaprotests_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
+    db.usaprotests_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
 
 ## Move DB comments to local
 

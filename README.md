@@ -6,4 +6,4 @@
 
 [Смертная казнь](https://eki.one/cmnt/deathpen/ru/)
 
-[Джонни Депп и Эмбер Хёрд](https://eki.one/cmnt/deppherd/ru/)
+[Беспорядки в США](https://eki.one/cmnt/usaprotests/ru/)
