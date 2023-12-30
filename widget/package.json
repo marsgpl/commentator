@@ -4,8 +4,8 @@
   "description": "Embeddable comments",
   "main": "src/index.html",
   "scripts": {
-    "dev": "node prepare-for-prod.js && npx potato-bundler --src=src --dst=dst/pandora/ru --force-delete-dst --lang=lang/pandora.dev.json && node prepare-for-dev.js",
-    "deploy": "node prepare-for-prod.js && npx potato-bundler --src=src --dst=release/abortion/ru --force-delete-dst --lang=lang/abortion.json && npx potato-bundler --src=src --dst=release/deathpen/ru --force-delete-dst --lang=lang/deathpen.json && npx potato-bundler --src=src --dst=release/pandora/ru --force-delete-dst --lang=lang/pandora.json && npx potato-bundler --src=src --dst=release/usaprotests/ru --force-delete-dst --lang=lang/usaprotests.json && ./upload.sh && node prepare-for-dev.js"
+    "build:dev": "node prepare-for-prod.js; npx potato-bundler --src=src --dst=dst/pandora/ru --force-delete-dst --lang=lang/pandora.dev.json; node prepare-for-dev.js",
+    "build:prod": "node prepare-for-prod.js; npx potato-bundler --src=src --dst=release/abortion/ru --force-delete-dst --lang=lang/abortion.json; npx potato-bundler --src=src --dst=release/deathpen/ru --force-delete-dst --lang=lang/deathpen.json; npx potato-bundler --src=src --dst=release/pandora/ru --force-delete-dst --lang=lang/pandora.json; npx potato-bundler --src=src --dst=release/usaprotests/ru --force-delete-dst --lang=lang/usaprotests.json; node prepare-for-dev.js"
   },
   "repository": {
     "type": "git",
