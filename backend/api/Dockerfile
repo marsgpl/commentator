@@ -1,4 +1,4 @@
-FROM google/dart
+FROM google/dart:2.12
 
 WORKDIR /commentator/api
 
