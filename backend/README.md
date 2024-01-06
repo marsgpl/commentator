@@ -119,6 +119,13 @@
     db.usaprotests_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
     db.usaprotests_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
 
+    db.epstein_ru_comments.ensureIndex({ "side": 1, "_id": 1 });
+    db.epstein_ru_comments.ensureIndex({ "appUserToken": 1 });
+    db.epstein_ru_comments.ensureIndex({ "text": "text" });
+    db.epstein_ru_comments_likes.ensureIndex({ "commentId": 1, "appUserToken": 1 }, { "unique": 1 });
+    db.epstein_ru_comments_replies.ensureIndex({ "commentId": 1, "_id": 1 });
+    db.epstein_ru_comments_replies.ensureIndex({ "appUserToken": 1 });
+
 ## Move DB comments to local
 
     ssh commentator@marsgpl 'docker exec -t commentator_mongo_1 mongoexport --uri="mongodb://root:r_xAf5RPdK7ZOqnYFjvcp57tPKVbx3bc7Uu@mongo:27017/commentators?authSource=admin" --collection=pandora_ru_comments --out=/data/db/pandora_ru_comments.json'

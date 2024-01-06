@@ -9,4 +9,5 @@ const AVAILABLE_COLLECTIONS = {
     'pandora_ru_comments': true,
     'deathpen_ru_comments': true,
     'usaprotests_ru_comments': true,
+    'epstein_ru_comments': true,
 };
